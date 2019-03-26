@@ -1,6 +1,6 @@
 # redisson-spring-boot-starter
-目前有很多项目还在使用jedis的 `setNx` 充当分布式锁,然而这个锁是有问题的,redisson是java支持redis的分布式锁的`唯一`实现,
-官方目前只有java web版本,配置起来很麻烦.集成该项目后只需要极少的配置.就能过使用redisson的全部功能. 目前支持
+目前有很多项目还在使用jedis的 `setNx` 充当分布式锁,然而这个锁是有问题的,redisson是java支持redis的redlock的`唯一`实现,
+官方目前只有java web版本,配置起来很麻烦.集成该项目后只需要极少的配置.就能够使用redisson的全部功能. 目前支持
 `集群模式`,`云托管模式`,`单Redis节点模式`,`哨兵模式`,`主从模式` 配置. 支持 `可重入锁`,`公平锁`,`联锁`,`红锁`,`读写锁` 锁定模式
 
 #### 介绍
@@ -67,13 +67,16 @@ public String test(User user) {
 
 #### 模式配置(也可以使用yml写法)
 
-#####单例模式
+##### 单例模式
+
 >单机版redis
 ```
 #单Redis节点模式
 redisson.singleServerConfig.address=127.0.0.1:6379
 ```
-#####集群模式
+
+##### 集群模式
+
 >集群模式除了适用于Redis集群环境，也适用于任何云计算服务商提供的集群模式，例如AWS ElastiCache集群版、Azure Redis Cache和阿里云（Aliyun）的云数据库Redis版。
 ```
 #集群模式
@@ -82,7 +85,9 @@ redisson.multiple-server-config.node-addresses[0]=127.0.0.1:6379
 redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 ```
-#####云托管模式
+
+##### 云托管模式
+
 >云托管模式适用于任何由云计算运营商提供的Redis云服务，包括亚马逊云的AWS ElastiCache、微软云的Azure Redis 缓存和阿里云（Aliyun）的云数据库Redis版
 
 ```
@@ -93,7 +98,7 @@ redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 ```
 
-#####哨兵模式
+##### 哨兵模式
 
 ```
 redisson.model=SENTINEL
@@ -104,7 +109,7 @@ redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 ```
 
-#####主从模式
+##### 主从模式
 
 ```
 redisson.model=MASTERSLAVE
@@ -114,9 +119,10 @@ redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 ```
 
-###属性列表(基本都是官方参数.我将参数整合了下.分为 `公共参数`,`单例模式参数`,`集群模式参数`)
+### 属性列表(基本都是官方参数.我将参数整合了下.分为 `公共参数`,`单例模式参数`,`集群模式参数`)
 
 > 1.公共参数
+
 
 属性名 | 默认值|备注
 ---|    ---    |---
