@@ -52,7 +52,7 @@ public class LockAop {
      */
     public String getVauleBySpel(String key, String[] parameterNames, Object[] values) {
 
-        if(!key.startsWith("#")){
+        if(!key.contains("#")){
             return key;
         }
         //spel解析器
