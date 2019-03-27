@@ -53,7 +53,9 @@ public class LockAop {
     public String getVauleBySpel(String key, String[] parameterNames, Object[] values) {
 
         if(!key.contains("#")){
-            return key;
+            String s = "redisson:lock:" + key;
+            log.info("没有使用spel表达式value->",s);
+            return s;
         }
         //spel解析器
         ExpressionParser parser = new SpelExpressionParser();
@@ -64,11 +66,12 @@ public class LockAop {
         }
         Expression expression = parser.parseExpression(key);
         Object value = expression.getValue(context);
-        log.info("key={},value={}",key,value);
         if(value!=null){
-            return value.toString();
+            String s = "redisson:lock:" + value.toString();
+            log.info("spel表达式key={},value={}",key,s);
+            return s;
         }
-        return "";
+        return "redisson:lock";
     }
 
     @Around("controllerAspect(lock)")
