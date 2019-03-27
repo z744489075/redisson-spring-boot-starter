@@ -45,8 +45,8 @@ redisson.singleServerConfig.address=127.0.0.1:6379
 
 ```
 
-//支持 spel 表达式
-@Lock(keys = "#user.name")
+//支持 spel 表达式 如果后面需要接字符串的话请用`+`连接. 字符串一定要打`单引号`
+@Lock(keys = "#user.name+'locks'")
 public String test(User user) {
     System.out.println("进来了test");
     return "test";
@@ -58,7 +58,32 @@ public String test(User user) {
 
 # 进阶篇
 
-#### 如何使用`redisson` 客户端实现自定义操作,只需要在spring 容器中注入客户端就行,如下:
+#### @Lock 注解参数介绍
+
+```
+    /**
+     * REENTRANT(可重入锁),FAIR(公平锁),MULTIPLE(联锁),REDLOCK(红锁),READ(读锁), WRITE(写锁), 
+     * AUTO(自动模式,当参数只有一个.使用 REENTRANT 参数多个 MULTIPLE)
+     */
+    LockModel lockModel() default LockModel.AUTO;
+    /**
+     * 需要锁定的keys
+     * @return
+     */
+    String[] keys() default {};
+    /**
+     * 锁超时时间,默认30000毫秒(可在配置文件全局设置)
+     * @return
+     */
+    long lockWatchdogTimeout() default 0;
+    /**
+     * 等待加锁超时时间,默认10000毫秒 -1 则表示一直等待(可在配置文件全局设置)
+     * @return
+     */
+    long attemptTimeout() default 0;
+```
+
+#### 如何使用`redisson` 客户端实现自定义操作,只需要在spring 容器中注入redisson客户端就行,如下:
 
 ```
     @Autowired
@@ -81,6 +106,7 @@ redisson.singleServerConfig.address=127.0.0.1:6379
 ```
 #集群模式
 redisson.model=CLUSTER
+#redis机器.一直累加下去
 redisson.multiple-server-config.node-addresses[0]=127.0.0.1:6379
 redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
@@ -93,6 +119,7 @@ redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 ```
 #云托管模式
 redisson.model=REPLICATED
+#redis机器.一直累加下去
 redisson.multiple-server-config.node-addresses[0]=127.0.0.1:6379
 redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
@@ -104,6 +131,7 @@ redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 redisson.model=SENTINEL
 #主服务器的名称是哨兵进程中用来监测主从服务切换情况的。
 redisson.multiple-server-config.master-name="mymaster"
+#redis机器.一直累加下去
 redisson.multiple-server-config.node-addresses[0]=127.0.0.1:6379
 redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
@@ -127,6 +155,8 @@ redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 属性名 | 默认值|备注
 ---|    ---    |---
 redisson.password | |用于节点身份验证的密码。 
+redisson.attemptTimeout |10000L | 等待获取锁超时时间,-1则是一直等待 
+redisson.lockModel | 单个key默认`可重入锁`多个key默认`联锁` | 锁的模式.如果不设置, REENTRANT(可重入锁),FAIR(公平锁),MULTIPLE(联锁),REDLOCK(红锁),READ(读锁), WRITE(写锁)
 redisson.model |SINGLE | 集群模式:SINGLE(单例),SENTINEL(哨兵),MASTERSLAVE(主从),CLUSTER(集群),REPLICATED(云托管)
 redisson.codec | org.redisson.codec.JsonJacksonCodec | Redisson的对象编码类是用于将对象进行序列化和反序列化，以实现对该对象在Redis里的读取和存储 
 redisson.threads | 当前处理核数量 * 2 |这个线程池数量被所有RTopic对象监听器，RRemoteService调用者和RExecutorService任务共同共享。 
@@ -147,19 +177,18 @@ redisson.sslKeystore | |指定SSL钥匙库的路径。
 redisson.sslKeystorePassword | |指定SSL钥匙库的密码。 
 redisson.lockWatchdogTimeout | 30000|监控锁的看门狗超时时间单位为毫秒。该参数只适用于分布式锁的加锁请求中未明确使用leaseTimeout参数的情况。如果该看门口未使用lockWatchdogTimeout去重新调整一个分布式锁的lockWatchdogTimeout超时，那么这个锁将变为失效状态。这个参数可以用来避免由Redisson客户端节点宕机或其他原因造成死锁的情况。 
 redisson.keepPubSubOrder | true|通过该参数来修改是否按订阅发布消息的接收顺序出来消息，如果选否将对消息实行并行处理，该参数只适用于订阅发布消息的情况。 
-redisson.lockModel | | 锁的模式.如果不设置,单个key默认可重入锁多个key默认联锁
-redisson.attemptTimeout |10000L | 等待获取锁超时时间,-1则是一直等待 
+
 
 >2. 单例模式参数
 
 属性名 | 默认值|备注
 ---|---|---
 redisson.singleServerConfig.address | | 服务器地址,必填ip:port
+redisson.singleServerConfig.database | 0| 尝试连接的数据库编号。
 redisson.singleServerConfig.subscriptionConnectionMinimumIdleSize |1 | 用于发布和订阅连接的最小保持连接数（长连接）。Redisson内部经常通过发布和订阅来实现许多功能。长期保持一定数量的发布订阅连接是必须的。
 redisson.singleServerConfig.subscriptionConnectionPoolSize | 50| 用于发布和订阅连接的连接池最大容量。连接池的连接数量自动弹性伸缩。
 redisson.singleServerConfig.connectionMinimumIdleSize |32 | 最小保持连接数（长连接）。长期保持一定数量的连接有利于提高瞬时写入反应速度。
 redisson.singleServerConfig.connectionPoolSize |64 | 连接池最大容量。连接池的连接数量自动弹性伸缩。
-redisson.singleServerConfig.database | 0| 尝试连接的数据库编号。
 redisson.singleServerConfig.dnsMonitoringInterval |5000 | 用来指定检查节点DNS变化的时间间隔。使用的时候应该确保JVM里的DNS数据的缓存时间保持在足够低的范围才有意义。用-1来禁用该功能。
 
 >3. 集群模式

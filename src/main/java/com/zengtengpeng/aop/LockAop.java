@@ -54,7 +54,7 @@ public class LockAop {
 
         if(!key.contains("#")){
             String s = "redisson:lock:" + key;
-            log.info("没有使用spel表达式value->",s);
+            log.info("没有使用spel表达式value->{}",s);
             return s;
         }
         //spel解析器
