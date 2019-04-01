@@ -50,12 +50,24 @@ public class RedissonProperties {
 
     //等待加锁超时时间 -1一直等待
     private Long attemptTimeout= 10000L;
+
+    //数据缓存时间 默认30分钟
+    private Long dataValidTime=1000*60* 30L;
     //结束
 
     @NestedConfigurationProperty
     private SingleServerConfig singleServerConfig;
     @NestedConfigurationProperty
     private MultipleServerConfig multipleServerConfig;
+
+
+    public Long getDataValidTime() {
+        return dataValidTime;
+    }
+
+    public void setDataValidTime(Long dataValidTime) {
+        this.dataValidTime = dataValidTime;
+    }
 
     public LockModel getLockModel() {
         return lockModel;

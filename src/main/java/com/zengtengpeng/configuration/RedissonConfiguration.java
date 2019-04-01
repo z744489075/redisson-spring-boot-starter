@@ -1,6 +1,9 @@
 package com.zengtengpeng.configuration;
 
 import com.zengtengpeng.aop.LockAop;
+import com.zengtengpeng.operation.RedissonBinary;
+import com.zengtengpeng.operation.RedissonCollection;
+import com.zengtengpeng.operation.RedissonObject;
 import com.zengtengpeng.properties.MultipleServerConfig;
 import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.Redisson;
@@ -28,6 +31,24 @@ public class RedissonConfiguration {
     @ConditionalOnMissingBean(LockAop.class)
     public LockAop lockAop() {
         return new LockAop();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(RedissonBinary.class)
+    public RedissonBinary RedissonBinary() {
+        return new RedissonBinary();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(RedissonObject.class)
+    public RedissonObject RedissonObject() {
+        return new RedissonObject();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(RedissonCollection.class)
+    public RedissonCollection RedissonCollection() {
+        return new RedissonCollection();
     }
 
     @Bean
