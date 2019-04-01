@@ -4,7 +4,7 @@
 ---|    ---    |---
 redisson.password | |用于节点身份验证的密码。 
 redisson.attemptTimeout |10000L | 等待获取锁超时时间,-1则是一直等待 单位毫秒
-redisson.dataValidTime | 30分钟 | 数据缓存时间 默认30分钟 -1永久缓存
+redisson.dataValidTime | 1000\*60\* 30L | 数据缓存时间 默认30分钟 -1永久缓存
 redisson.lockModel | 单个key默认`可重入锁`多个key默认`联锁` | 锁的模式.如果不设置, REENTRANT(可重入锁),FAIR(公平锁),MULTIPLE(联锁),REDLOCK(红锁),READ(读锁), WRITE(写锁)
 redisson.model |SINGLE | 集群模式:SINGLE(单例),SENTINEL(哨兵),MASTERSLAVE(主从),CLUSTER(集群),REPLICATED(云托管)
 redisson.codec | org.redisson.codec.JsonJacksonCodec | Redisson的对象编码类是用于将对象进行序列化和反序列化，以实现对该对象在Redis里的读取和存储 
