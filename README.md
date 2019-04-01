@@ -14,7 +14,7 @@
 > 目前jedis是只支持单机的.
 
 > jedis setNx 和设置过期时间是不同步的,在某些极端的情况下会发生死锁.导致程序崩溃.如果没有设置value,
-线程1可能会释放线程2的锁 详情看下这篇 [博客](https://blog.csdn.net/u014677702/article/details/83308972)
+线程1可能会释放线程2的锁
 
 
 #### 软件架构
@@ -42,7 +42,7 @@
 redisson.singleServerConfig.address=127.0.0.1:6379
 ```
 
-2.在方法增加 `@Lock` 注解
+2.在方法增加 `@Lock` 注解 [lock参数介绍](readme/lock.md)
 
 ```
 
@@ -58,31 +58,6 @@ public String test(User user) {
 3. 完毕
 
 # 进阶篇
-
-#### @Lock 注解参数介绍
-
-```
-    /**
-     * REENTRANT(可重入锁),FAIR(公平锁),MULTIPLE(联锁),REDLOCK(红锁),READ(读锁), WRITE(写锁), 
-     * AUTO(自动模式,当参数只有一个.使用 REENTRANT 参数多个 MULTIPLE)
-     */
-    LockModel lockModel() default LockModel.AUTO;
-    /**
-     * 需要锁定的keys
-     * @return
-     */
-    String[] keys() default {};
-    /**
-     * 锁超时时间,默认30000毫秒(可在配置文件全局设置)
-     * @return
-     */
-    long lockWatchdogTimeout() default 0;
-    /**
-     * 等待加锁超时时间,默认10000毫秒 -1 则表示一直等待(可在配置文件全局设置)
-     * @return
-     */
-    long attemptTimeout() default 0;
-```
 
 #### 如何使用`redisson` 客户端实现自定义操作,只需要在spring 容器中注入redisson客户端就行,如下:
 
