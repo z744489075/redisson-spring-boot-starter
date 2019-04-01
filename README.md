@@ -23,7 +23,7 @@
 
 #### 安装教程
 
-1. 引入 pom.xml
+>.1. 引入 pom.xml
 
 ```xml
 <dependency>
@@ -33,19 +33,19 @@
 </dependency>
 ```
 
-#### 使用说明
-
-1. 在  `application.properties` 增加
+2. 在  `application.properties` 增加
 
 ```
 #单Redis节点模式
 redisson.singleServerConfig.address=127.0.0.1:6379
 ```
 
-2.在方法增加 `@Lock` 注解 [lock参数介绍](readme/lock.md)
+#### 使用说明
 
+>1.如何使用`分布式锁`?
+
+在方法增加 `@Lock` 注解 [lock参数介绍](readme/lock.md)
 ```
-
 //支持 spel 表达式 如果后面需要接字符串的话请用`+`连接. 字符串一定要打`单引号`
 @Lock(keys = "#user.name+'locks'")
 public String test(User user) {
@@ -55,7 +55,24 @@ public String test(User user) {
 
 ```
 
-3. 完毕
+>2.如何存储数据?(目前实现了三个对象模板)
+
+1.RedissonObject 这个是比较通用的模板,任何对象都可以存在这里面,在spring 容器中注入对象即可 [demo实例](readme/object.md)
+```
+    @Resource
+    private RedissonObject redissonObject;
+```
+2.RedissonBinary 这个是存储二进制的模板.可以存放图片之内的二进制文件,在spring 容器中注入对象即可 [demo实例](readme/binary.md)
+```
+    @Resource
+    private RedissonBinary redissonBinary;
+```
+3.RedissonCollection 这个是集合模板,可以存放`Map`,`List`,`Set`集合元素,在spring 容器中注入对象即可 [demo实例](readme/collection.md)
+```
+    @Resource
+    private RedissonCollection redissonCollection;
+```
+
 
 # 进阶篇
 
@@ -65,6 +82,8 @@ public String test(User user) {
     @Autowired
     private RedissonClient redissonClient;
 ```
+
+
 
 #### 集群模式配置(也可以使用yml写法) [链接地址](readme/mode.md)
 
