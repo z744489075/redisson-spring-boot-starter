@@ -1,9 +1,8 @@
-# redisson-spring-boot-starter
+# redisson-spring-boot-starter 
 目前有很多项目还在使用jedis的 `setNx` 充当分布式锁,然而这个锁是有问题的,redisson是java支持redis的redlock的`唯一`实现,
 集成该项目后只需要极少的配置.就能够使用redisson的全部功能. 目前支持
 `集群模式`,`云托管模式`,`单Redis节点模式`,`哨兵模式`,`主从模式` 配置. 支持 `可重入锁`,`公平锁`,`联锁`,`红锁`,`读写锁` 锁定模式
 
-#### 先来支持下 [996.icu](https://github.com/996icu/996.ICU/blob/master/zh_CN.md)
 
 #### 介绍
 1. 我们为什么需要`redisson`?
@@ -211,4 +210,6 @@ redisson.multiple-server-config.dnsMonitoringInterval |5000 | 监测DNS的变化
 redisson.multiple-server-config.scanInterval | 1000 | (集群,哨兵,云托管模特特有) 对Redis集群节点状态扫描的时间间隔。单位是毫秒。
 redisson.multiple-server-config.database | 0 | (哨兵模式,云托管,主从模式特有)尝试连接的数据库编号。
 redisson.multiple-server-config.masterName | | (哨兵模式特有)主服务器的名称是哨兵进程中用来监测主从服务切换情况的。
+
+
 
