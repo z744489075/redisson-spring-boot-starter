@@ -148,7 +148,7 @@ redisson.multiple-server-config.node-addresses[1]=127.0.0.1:6380
 redisson.multiple-server-config.node-addresses[2]=127.0.0.1:6381
 ```
 
-### 属性列表(基本都是官方参数.我将参数整合了下.分为 `公共参数`,`单例模式参数`,`集群模式参数`) [链接地址](https://gitee.com/ztp/redisson-spring-boot-starter/readme/tree/1.0.2/attr.md)
+### 属性列表(基本都是官方参数.我将参数整合了下.分为 `公共参数`,`单例模式参数`,`集群模式参数`) [链接地址](https://gitee.com/ztp/redisson-spring-boot-starter/tree/1.0.2/readme/attr.md)
 
 
 
