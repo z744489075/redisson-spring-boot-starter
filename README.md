@@ -73,6 +73,9 @@ public String test(User user) {
     private RedissonCollection redissonCollection;
 ```
 
+>4. 如何session集群?
+
+> 在启动类标注 `@EnableRedissonHttpSession` 即可
 
 
 # 进阶篇
@@ -84,8 +87,11 @@ public String test(User user) {
     private RedissonClient redissonClient;
 ```
 
-#### 如何使用消息队列MQ,使用起来非常简单.两个注解即可完成操作
+#### 如何集成spring cache  [详细实例](readme/cache.md)
 
+> 启动类加上 `@EnableCache(value = {"cache1","cache2"})` ,@Cacheable,@CachePut,@CacheEvict的value必须包含在这里面,不然会报错
+
+#### 如何使用消息队列MQ.(使用起来非常简单.两个注解即可完成操作)
 消息队列分为 `生产者`以及`消费者`,`生产者`生产消息供`消费者`消费 [详细实例](readme/mq.md)
 
 >`生产者` 配置,发送消息有两种模式,二选一即可
@@ -125,10 +131,7 @@ public void test1(CharSequence charSequence,User o,Object object){
 }
 ```
 
-
-
 #### 集群模式配置(也可以使用yml写法) [链接地址](readme/mode.md)
-
 
 #### 属性列表(分为 `公共参数`,`单例模式参数`,`集群模式参数`) [链接地址](readme/attr.md)
 
