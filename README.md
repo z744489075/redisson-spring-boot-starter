@@ -29,7 +29,7 @@
 <dependency>
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
@@ -74,6 +74,7 @@ public String test(User user) {
 ```
 
 
+
 # 进阶篇
 
 #### 如何使用`redisson` 客户端实现自定义操作,只需要在spring 容器中注入redisson客户端就行,如下:
@@ -81,6 +82,47 @@ public String test(User user) {
 ```
     @Autowired
     private RedissonClient redissonClient;
+```
+
+#### 如何使用消息队列MQ,使用起来非常简单.两个注解即可完成操作
+
+消息队列分为 `生产者`以及`消费者`,`生产者`生产消息供`消费者`消费 [详细实例](readme/mq.md)
+
+>`生产者` 配置,发送消息有两种模式,二选一即可
+
+1.`代码模式`
+```
+RTopic testMq = redissonClient.getTopic("testMq");
+User message = new User();
+message.setAge("12");
+message.setName("的身份为");
+testMq.publish(message);
+```
+
+2.`注解模式`
+```
+@RequestMapping("testMq1")
+@ResponseBody
+@MQPublish(name = "test")
+public User testMq1(){
+    User user=new User();
+    user.setName("garegarg");
+    user.setAge("123");
+    return user;
+}
+```
+
+>`消费者` 配置
+
+1.启动类加上 `@EnableMQ` 开启消费者
+
+2.使用注解`@MQListener(name = "testMq")`配置消费者
+```
+@MQListener(name = "testMq")
+public void test1(CharSequence charSequence,User o,Object object){
+    System.out.println("charSequence="+charSequence);
+    System.out.println("收到消息2"+o);
+}
 ```
 
 

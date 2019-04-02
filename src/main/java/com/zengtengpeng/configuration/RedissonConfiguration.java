@@ -1,6 +1,8 @@
 package com.zengtengpeng.configuration;
 
 import com.zengtengpeng.aop.LockAop;
+import com.zengtengpeng.aop.MQAop;
+import com.zengtengpeng.mq.RedissonMQListener;
 import com.zengtengpeng.operation.RedissonBinary;
 import com.zengtengpeng.operation.RedissonCollection;
 import com.zengtengpeng.operation.RedissonObject;
@@ -31,6 +33,11 @@ public class RedissonConfiguration {
     @ConditionalOnMissingBean(LockAop.class)
     public LockAop lockAop() {
         return new LockAop();
+    }
+    @Bean
+    @ConditionalOnMissingBean(MQAop.class)
+    public MQAop MQAop() {
+        return new MQAop();
     }
 
     @Bean
