@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 public @interface EnableCache {
 
     /**
-     * 缓存的名称 @Cacheable,@CachePut,@CacheEvict的value必须包含在这里面,不然会报错
+     * 缓存的名称 @Cacheable,@CachePut,@CacheEvict的value必须包含在这里面
      * @return
      */
     String[] value();
