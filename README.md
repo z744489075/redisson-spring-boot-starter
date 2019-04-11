@@ -141,5 +141,3 @@ public void test1(CharSequence charSequence,User o,Object object){
 #### 集群模式配置(也可以使用yml写法) [链接地址](readme/mode.md)
 
 #### 属性列表(分为 `公共参数`,`单例模式参数`,`集群模式参数`) [链接地址](readme/attr.md)
-
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
