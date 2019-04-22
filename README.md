@@ -49,6 +49,8 @@ redisson.singleServerConfig.address=127.0.0.1:6379
 
 #### 使用说明
 
+---
+
 >1.如何使用`分布式锁`?
 
 在方法增加 `@Lock` 注解 [lock参数介绍](readme/lock.md)
@@ -61,6 +63,7 @@ public String test(User user) {
 }
 
 ```
+---
 
 >2.如何存储数据?(目前实现了三个对象模板)
 
@@ -80,12 +83,16 @@ public String test(User user) {
     private RedissonCollection redissonCollection;
 ```
 
->4. 如何session集群?
+---
+
+>3. 如何session集群?
 
 > 在启动类标注 `@EnableRedissonHttpSession` 即可
 
 
 # 进阶篇
+
+---
 
 #### 如何使用`redisson` 客户端实现自定义操作,只需要在spring 容器中注入redisson客户端就行,如下:
 
@@ -94,9 +101,13 @@ public String test(User user) {
     private RedissonClient redissonClient;
 ```
 
+---
+
 #### 如何集成spring cache  [详细实例](readme/cache.md)
 
 > 启动类加上 `@EnableCache(value = {"cache1","cache2"})` ,@Cacheable,@CachePut,@CacheEvict的value必须包含在这里面
+
+---
 
 #### 如何使用消息队列MQ.(使用起来非常简单.两个注解即可完成操作)
 消息队列分为 `生产者`以及`消费者`,`生产者`生产消息供`消费者`消费 [详细实例](readme/mq.md)
@@ -137,9 +148,10 @@ public void test1(CharSequence charSequence,User o,Object object){
     System.out.println("收到消息2"+o);
 }
 ```
+---
 
 #### 集群模式配置(也可以使用yml写法) [链接地址](readme/mode.md)
 
-#### 属性列表(分为 `公共参数`,`单例模式参数`,`集群模式参数`) [链接地址](readme/attr.md)
+---
 
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+#### 属性列表(分为 `公共参数`,`单例模式参数`,`集群模式参数`) [链接地址](readme/attr.md)
