@@ -5,11 +5,7 @@
 
 #### 升级日志
 
->2019-04-02:1.0.2更新
-1.增加spring cache 整合
-2.增加session集群
-3.增加消息队列
-4.增加对象存储
+[请点击这里](readme/up.md) 
 
 #### 介绍
 1. 我们为什么需要`redisson`?
@@ -36,7 +32,7 @@
 <dependency>
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
@@ -55,8 +51,8 @@ redisson.singleServerConfig.address=127.0.0.1:6379
 
 在方法增加 `@Lock` 注解 [lock参数介绍](readme/lock.md)
 ```
-//支持 spel 表达式 如果后面需要接字符串的话请用`+`连接. 字符串一定要打`单引号`
-@Lock(keys = "#user.name+'locks'")
+//1.支持spel表达式,keyConstant是常量(可选)
+@Lock(keys = "#user.name",keyConstant = "常量"))
 public String test(User user) {
     System.out.println("进来了test");
     return "test";

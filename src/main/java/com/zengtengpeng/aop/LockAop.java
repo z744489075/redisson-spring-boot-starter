@@ -24,6 +24,8 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -48,14 +50,16 @@ public class LockAop {
      * @param key               定义的key值 以#开头 例如:#user
      * @param parameterNames    形参
      * @param values             形参值
+     * @param keyConstant key的常亮
      * @return
      */
-    public String getVauleBySpel(String key, String[] parameterNames, Object[] values) {
-
+    public List<String> getVauleBySpel(String key, String[] parameterNames, Object[] values, String keyConstant) {
+        List<String> keys=new ArrayList<>();
         if(!key.contains("#")){
-            String s = "redisson:lock:" + key;
+            String s = "redisson:lock:" + key+keyConstant;
             log.info("没有使用spel表达式value->{}",s);
-            return s;
+            keys.add(s);
+            return keys;
         }
         //spel解析器
         ExpressionParser parser = new SpelExpressionParser();
@@ -67,11 +71,22 @@ public class LockAop {
         Expression expression = parser.parseExpression(key);
         Object value = expression.getValue(context);
         if(value!=null){
-            String s = "redisson:lock:" + value.toString();
-            log.info("spel表达式key={},value={}",key,s);
-            return s;
+            if(value instanceof List){
+                List value1 = (List) value;
+                for (Object o : value1) {
+                    keys.add("redisson:lock:" + o.toString()+keyConstant);
+                }
+            }else if(value.getClass().isArray()){
+                Object[] obj= (Object[]) value;
+                for (Object o : obj) {
+                    keys.add("redisson:lock:" + o.toString()+keyConstant);
+                }
+            }else {
+                keys.add("redisson:lock:" + value.toString()+keyConstant);
+            }
         }
-        return "redisson:lock";
+        log.info("spel表达式key={},value={}",key,keys);
+        return keys;
     }
 
     @Around("controllerAspect(lock)")
@@ -97,7 +112,7 @@ public class LockAop {
             if (lockModel1 != null) {
                 lockModel = lockModel1;
             } else if (keys.length > 1) {
-                lockModel = LockModel.MULTIPLE;
+                lockModel = LockModel.REDLOCK;
             } else {
                 lockModel = LockModel.REENTRANT;
             }
@@ -111,33 +126,59 @@ public class LockAop {
         //一直等待加锁.
         switch (lockModel) {
             case FAIR:
-                rLock = redissonClient.getFairLock(getVauleBySpel(keys[0],parameterNames,args));
+                rLock = redissonClient.getFairLock(getVauleBySpel(keys[0],parameterNames,args,lock.keyConstant()).get(0));
                 break;
             case REDLOCK:
-                RLock[] locks=new RLock[keys.length];
-                int index=0;
+                List<RLock> rLocks=new ArrayList<>();
                 for (String key : keys) {
-                    locks[index++]=redissonClient.getLock(getVauleBySpel(key,parameterNames,args));
+                    List<String> vauleBySpel = getVauleBySpel(key, parameterNames, args, lock.keyConstant());
+                    for (String s : vauleBySpel) {
+                        rLocks.add(redissonClient.getLock(s));
+                    }
+                }
+                RLock[] locks=new RLock[rLocks.size()];
+                int index=0;
+                for (RLock r : rLocks) {
+                    locks[index++]=r;
                 }
                 rLock = new RedissonRedLock(locks);
                 break;
             case MULTIPLE:
-                RLock[] locks1=new RLock[keys.length];
-                int index1=0;
+                rLocks=new ArrayList<>();
+
                 for (String key : keys) {
-                    locks1[index1++]=redissonClient.getLock(getVauleBySpel(key,parameterNames,args));
+                    List<String> vauleBySpel = getVauleBySpel(key, parameterNames, args, lock.keyConstant());
+                    for (String s : vauleBySpel) {
+                        rLocks.add(redissonClient.getLock(s));
+                    }
                 }
-                rLock = new RedissonMultiLock(locks1);
+                locks=new RLock[rLocks.size()];
+                index=0;
+                for (RLock r : rLocks) {
+                    locks[index++]=r;
+                }
+                rLock = new RedissonMultiLock(locks);
                 break;
             case REENTRANT:
-                rLock= redissonClient.getLock(getVauleBySpel(keys[0],parameterNames,args));
+                List<String> vauleBySpel = getVauleBySpel(keys[0], parameterNames, args, lock.keyConstant());
+                //如果spel表达式是数组或者LIST 则使用红锁
+                if(vauleBySpel.size()==1){
+                    rLock= redissonClient.getLock(vauleBySpel.get(0));
+                }else {
+                    locks=new RLock[vauleBySpel.size()];
+                    index=0;
+                    for (String s : vauleBySpel) {
+                        locks[index++]=redissonClient.getLock(s);
+                    }
+                    rLock = new RedissonRedLock(locks);
+                }
                 break;
             case READ:
-                RReadWriteLock rwlock = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args));
+                RReadWriteLock rwlock = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args, lock.keyConstant()).get(0));
                 rLock = rwlock.readLock();
                 break;
             case WRITE:
-                RReadWriteLock rwlock1 = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args));
+                RReadWriteLock rwlock1 = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args, lock.keyConstant()).get(0));
                 rLock = rwlock1.writeLock();
                 break;
         }
