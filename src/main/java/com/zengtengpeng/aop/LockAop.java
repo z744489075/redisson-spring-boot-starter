@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.annotation.Order;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit;
  * 分布式锁aop
  */
 @Aspect
+@Order(-10)
 public class LockAop {
     private Logger log = LoggerFactory.getLogger(getClass());
 
