@@ -35,7 +35,7 @@ public class RedissonProperties {
     private String sslTruststorePassword;
     private URI sslKeystore;
     private String sslKeystorePassword;
-    private Integer pingConnectionInterval=0;
+    private Integer pingConnectionInterval=1000;
     private Boolean keepAlive=false;
     private Boolean tcpNoDelay=false;
     private Boolean referenceEnabled = true;

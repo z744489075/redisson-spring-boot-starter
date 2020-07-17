@@ -26,6 +26,7 @@ redisson.sslKeystore | |指定SSL钥匙库的路径。
 redisson.sslKeystorePassword | |指定SSL钥匙库的密码。 
 redisson.lockWatchdogTimeout | 30000|监控锁的看门狗超时时间单位为毫秒。该参数只适用于分布式锁的加锁请求中未明确使用leaseTimeout参数的情况。如果该看门口未使用lockWatchdogTimeout去重新调整一个分布式锁的lockWatchdogTimeout超时，那么这个锁将变为失效状态。这个参数可以用来避免由Redisson客户端节点宕机或其他原因造成死锁的情况。 
 redisson.keepPubSubOrder | true|通过该参数来修改是否按订阅发布消息的接收顺序出来消息，如果选否将对消息实行并行处理，该参数只适用于订阅发布消息的情况。 
+redisson.pingConnectionInterval | 1000| 心跳间隔,大量的使用者使用了外网的redis而且网速特别差,将会强制断线,如何发生这种情况请将这个参数改大
 
 
 >2. 单例模式参数
