@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.net.URI;
+import java.net.URL;
 
 @ConfigurationProperties(prefix = "redisson")
 public class RedissonProperties {
@@ -21,7 +22,7 @@ public class RedissonProperties {
 
     //公共参数
     private Integer idleConnectionTimeout = 10000;
-    private Integer pingTimeout = 1000;
+//    private Integer pingTimeout = 1000;
     private Integer connectTimeout = 10000;
     private Integer timeout = 3000;
     private Integer retryAttempts = 3;
@@ -31,9 +32,9 @@ public class RedissonProperties {
     private String clientName;
     private Boolean sslEnableEndpointIdentification = true;
     private SslProvider sslProvider=SslProvider.JDK;
-    private URI sslTruststore;
+    private URL sslTruststore;
     private String sslTruststorePassword;
-    private URI sslKeystore;
+    private URL sslKeystore;
     private String sslKeystorePassword;
     private Integer pingConnectionInterval=1000;
     private Boolean keepAlive=false;
@@ -169,9 +170,6 @@ public class RedissonProperties {
         this.idleConnectionTimeout = idleConnectionTimeout;
     }
 
-    public void setPingTimeout(Integer pingTimeout) {
-        this.pingTimeout = pingTimeout;
-    }
 
     public void setConnectTimeout(Integer connectTimeout) {
         this.connectTimeout = connectTimeout;
@@ -261,14 +259,6 @@ public class RedissonProperties {
         this.idleConnectionTimeout = idleConnectionTimeout;
     }
 
-    public int getPingTimeout() {
-        return pingTimeout;
-    }
-
-    public void setPingTimeout(int pingTimeout) {
-        this.pingTimeout = pingTimeout;
-    }
-
     public int getConnectTimeout() {
         return connectTimeout;
     }
@@ -341,14 +331,6 @@ public class RedissonProperties {
         this.sslProvider = sslProvider;
     }
 
-    public URI getSslTruststore() {
-        return sslTruststore;
-    }
-
-    public void setSslTruststore(URI sslTruststore) {
-        this.sslTruststore = sslTruststore;
-    }
-
     public String getSslTruststorePassword() {
         return sslTruststorePassword;
     }
@@ -357,11 +339,19 @@ public class RedissonProperties {
         this.sslTruststorePassword = sslTruststorePassword;
     }
 
-    public URI getSslKeystore() {
+    public URL getSslTruststore() {
+        return sslTruststore;
+    }
+
+    public void setSslTruststore(URL sslTruststore) {
+        this.sslTruststore = sslTruststore;
+    }
+
+    public URL getSslKeystore() {
         return sslKeystore;
     }
 
-    public void setSslKeystore(URI sslKeystore) {
+    public void setSslKeystore(URL sslKeystore) {
         this.sslKeystore = sslKeystore;
     }
 
