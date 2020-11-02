@@ -39,9 +39,12 @@ public class RedissonCollection {
     public void setMapValues(String name, Map data,Long time){
         RMap map = redissonClient.getMap(name);
         Long dataValidTime = redissonProperties.getDataValidTime();
-        if(time!=-1){
+        if(time==null){
             map.expire(dataValidTime, TimeUnit.MILLISECONDS);
+        }else if(time!=-1){
+            map.expire(time, TimeUnit.MILLISECONDS);
         }
+
         map.putAll(data);
     }
     /**
@@ -73,8 +76,10 @@ public class RedissonCollection {
     public void setListValues(String name, List data, Long time){
         RList list = redissonClient.getList(name);
         Long dataValidTime = redissonProperties.getDataValidTime();
-        if(time!=-1){
+        if(time==null){
             list.expire(dataValidTime, TimeUnit.MILLISECONDS);
+        }else if(time!=-1){
+            list.expire(time, TimeUnit.MILLISECONDS);
         }
         list.addAll(data);
     }
@@ -106,8 +111,10 @@ public class RedissonCollection {
     public void setSetValues(String name, Set data, Long time){
         RSet set = redissonClient.getSet(name);
         Long dataValidTime = redissonProperties.getDataValidTime();
-        if(time!=-1){
+        if(time==null){
             set.expire(dataValidTime, TimeUnit.MILLISECONDS);
+        }else if(time!=-1){
+            set.expire(time, TimeUnit.MILLISECONDS);
         }
         set.addAll(data);
     }
