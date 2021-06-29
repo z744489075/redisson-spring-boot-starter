@@ -36,13 +36,12 @@ public class RedissonProperties {
     private String sslTruststorePassword;
     private URL sslKeystore;
     private String sslKeystorePassword;
-    private Integer pingConnectionInterval=1000;
+    private Integer pingConnectionInterval=30000;
     private Boolean keepAlive=false;
     private Boolean tcpNoDelay=false;
     private Boolean referenceEnabled = true;
     private Long lockWatchdogTimeout=30000L;
     private Boolean keepPubSubOrder=true;
-    private Boolean decodeInExecutor=false;
     private Boolean useScriptCache=false;
     private Integer minCleanUpDelay=5;
     private Integer maxCleanUpDelay=1800;
@@ -110,13 +109,6 @@ public class RedissonProperties {
         this.keepPubSubOrder = keepPubSubOrder;
     }
 
-    public Boolean getDecodeInExecutor() {
-        return decodeInExecutor;
-    }
-
-    public void setDecodeInExecutor(Boolean decodeInExecutor) {
-        this.decodeInExecutor = decodeInExecutor;
-    }
 
     public Boolean getUseScriptCache() {
         return useScriptCache;

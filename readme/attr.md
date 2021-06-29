@@ -3,7 +3,7 @@
 属性名 | 默认值|备注
 ---|    ---    |---
 redisson.password | |用于节点身份验证的密码。 
-redisson.pingConnectionInterval | 1000| 连接时间,超过这个时间则报错
+redisson.pingConnectionInterval | 30000| 连接时间,超过这个时间则报错
 redisson.timeout | 3000|等待节点回复命令的时间。该时间从命令发送成功时开始计时。 
 redisson.attemptTimeout |10000L | 等待获取锁超时时间,-1则是一直等待 单位毫秒
 redisson.lockWatchdogTimeout | 30000| 锁定之后业务最长的执行时间,超时则报错回滚业务(毫秒) 
