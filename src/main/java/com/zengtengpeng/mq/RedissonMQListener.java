@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 
 
@@ -26,7 +25,11 @@ public class RedissonMQListener implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         ReflectionUtils.doWithMethods(bean.getClass(), method -> {
-            MQListener annotation = AnnotationUtils.findAnnotation(method, MQListener.class);
+            /* AnnotationUtils.findAnnotation 当代理方法进入时在当前代理方法找不到 @MQListener，则会继续向上寻找，最终在原方法中获取到@MQListener注解
+               从而导致代理方法获取@MQListener注解，从而导致topic将代理方法也加入到MQListener中 */
+//            MQListener annotation = AnnotationUtils.findAnnotation(method, MQListener.class);
+            // 解决方案：仅获取当前方法上是否存在@MQListener注解，存在则添加MQListener
+            MQListener annotation = method.getDeclaredAnnotation(MQListener.class);
             if(annotation!=null){
                 switch (annotation.model()){
                     case PRECISE:
