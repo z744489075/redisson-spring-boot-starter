@@ -1,13 +1,35 @@
 
 > 2022-02-16:1.0.11 redissonObject,redissonCollection 增加新的方法
     
-//如果缓存有值从缓存里面读, 否则从接口函数读实时数据存入redis后返回新值
-redissonObject.getValue("object1",()->"获取值逻辑",200213213L);
+```java
+        //获取Map ,如果redis没有,则从接口函数中获取存入map 并返回
+        redissonCollection.getMap("map", () -> {
+            Map<String,String> map=new HashMap<>();
+            map.put("123","456");
+            map.put("789","111");
+            return map;
+        });
+        //获取List ,如果redis没有,则从接口函数中获取存入List 并返回
+        redissonCollection.getList("list",()->{
+            List<String> list=new ArrayList<>();
+            list.add("123");
+            list.add("456");
+            return list;
+        });
 
-//如果缓存有值从缓存里面读, 否则从接口函数读实时数据存入redis
-Object test1 = redissonCollection.getMapValue("test", "444", () -> {
-return "获取值";
-}, 2000000L);
+        //获取Set ,如果redis没有,则从接口函数中获取存入Set 并返回
+        redissonCollection.getSet("set",()->{
+            Set<String> set=new HashSet<>();
+            set.add("1111");
+            set.add("2222");
+            return set;
+        });
+
+        //如果缓存有值从缓存里面读, 否则从接口函数读实时数据存入redis
+        Object test1 = redissonCollection.getMapValue("test", "444", () -> {
+            return 1234;
+        }, 2000000L);
+```
 
 
 >2019-10-16:1.0.4更新

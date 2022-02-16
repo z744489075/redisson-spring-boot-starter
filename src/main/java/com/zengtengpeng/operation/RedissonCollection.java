@@ -1,6 +1,9 @@
 package com.zengtengpeng.operation;
 
 import com.zengtengpeng.func.RealData;
+import com.zengtengpeng.func.RealDataList;
+import com.zengtengpeng.func.RealDataMap;
+import com.zengtengpeng.func.RealDataSet;
 import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.api.*;
 
@@ -29,6 +32,33 @@ public class RedissonCollection {
      * @return
      */
     public <K, V> RMap<K, V> getMap(String name) {
+        return redissonClient.getMap(name);
+    }
+    /**
+     * 获取map集合,如果没有则通过实时数据
+     *
+     * @param name
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public <K, V> RMap<K, V> getMap(String name, RealDataMap realDataMap){
+        return getMap(name,realDataMap,redissonProperties.getDataValidTime());
+    }
+    /**
+     * 获取map集合,如果没有则通过实时数据
+     *
+     * @param name
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public <K, V> RMap<K, V> getMap(String name, RealDataMap realDataMap,Long time) {
+        RMap<Object, Object> map = redissonClient.getMap(name);
+        if(map==null ||map.size()==0){
+            Map objectObjectMap = realDataMap.get();
+            setMapValues(name,objectObjectMap,time);
+        }
         return redissonClient.getMap(name);
     }
 
@@ -139,6 +169,31 @@ public class RedissonCollection {
         return redissonClient.getList(name);
     }
     /**
+     * 获取List集合 如果没有则通过实时数据获取
+     *
+     * @param name
+     * @return
+     */
+    public <T> RList<T> getList(String name,RealDataList realDataList, Long time) {
+        RList<Object> list = getList(name);
+        if(list==null || list.size()==0){
+            List objects = realDataList.get();
+            setListValues(name,objects,time);
+        }
+        return getList(name);
+    }
+
+    /**
+     * 获取List集合对应的index值
+     *
+     * @param name
+     * @return
+     */
+    public <T> RList<T> getList(String name, RealDataList realDataList) {
+        return getList(name,realDataList,redissonProperties.getDataValidTime());
+    }
+
+    /**
      * 获取List集合对应的index值
      *
      * @param name
@@ -147,34 +202,8 @@ public class RedissonCollection {
     public <T> T getListValue(String name,Integer index) {
         return (T) getList(name).get(index);
     }
-    /**
-     * 获取List集合对应的index值
-     *
-     * @param name
-     * @return
-     */
-    public <T> T getListValue(String name,Integer index,RealData realData) {
-        Object o = getList(name).get(index);
-        if(o==null){
-            o = realData.get();
-            setListValue(name,o);
-        }
-        return (T) o;
-    }
-    /**
-     * 获取List集合对应的index值
-     *
-     * @param name
-     * @return
-     */
-    public <T> T getListValue(String name,Integer index,RealData realData,Long time) {
-        Object o = getList(name).get(index);
-        if(o==null){
-            o = realData.get();
-            setListValue(name,o,time);
-        }
-        return (T) o;
-    }
+
+
 
     /**
      * 设置List集合
@@ -244,6 +273,30 @@ public class RedissonCollection {
      */
     public <T> RSet<T> getSet(String name) {
         return redissonClient.getSet(name);
+    }
+    /**
+     * 获取List集合 如果没有则通过实时数据获取
+     *
+     * @param name
+     * @return
+     */
+    public <T> RSet<T> getSet(String name, RealDataSet realDataSet, Long time) {
+        RSet<Object> set = getSet(name);
+        if(set==null || set.size()==0){
+            Set<Object> objects = realDataSet.get();
+            setSetValues(name,objects,time);
+        }
+        return getSet(name);
+    }
+
+    /**
+     * 获取List集合对应的index值
+     *
+     * @param name
+     * @return
+     */
+    public <T> RSet<T> getSet(String name, RealDataSet realDataSet) {
+        return getSet(name,realDataSet,redissonProperties.getDataValidTime());
     }
 
     /**

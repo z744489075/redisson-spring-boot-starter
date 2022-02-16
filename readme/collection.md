@@ -34,6 +34,14 @@ public class CollectionController {
         }, 2000000L);
         System.out.println("test1="+test1);
         
+        //获取Map ,如果redis没有,则从接口函数中获取存入map 并返回
+        redissonCollection.getMap("map", () -> {
+            Map<String,String> map=new HashMap<>();
+            map.put("123","456");
+            map.put("789","111");
+            return map;
+        });
+        
         return "11";
     }
 
@@ -60,6 +68,15 @@ public class CollectionController {
         //获取值
         RList<Object> list1 = redissonCollection.getList("list");
         System.out.println(list1);
+        
+        //获取List ,如果redis没有,则从接口函数中获取存入List 并返回
+        redissonCollection.getList("list",()->{
+            List<String> list=new ArrayList<>();
+            list.add("123");
+            list.add("456");
+            return list;
+        });
+        
         return "11";
     }
     /**
@@ -85,6 +102,15 @@ public class CollectionController {
         //获取值
         RSet<Object> set1 = redissonCollection.getSet("set");
         System.out.println(set1);
+
+
+        //获取Set ,如果redis没有,则从接口函数中获取存入Set 并返回
+        redissonCollection.getSet("set",()->{
+            Set<String> set=new HashSet<>();
+            set.add("1111");
+            set.add("2222");
+            return set;
+        });
         return "11";
     }
 
