@@ -1,5 +1,6 @@
 package com.zengtengpeng.operation;
 
+import com.zengtengpeng.func.RealData;
 import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
@@ -27,6 +28,36 @@ public class RedissonObject {
     public <T> T getValue(String name) {
         RBucket<T> bucket = redissonClient.getBucket(name);
         return bucket.get();
+    }
+    /**
+     * 获取对象值
+     *
+     * @param name
+     * @param <T>
+     * @return
+     */
+    public <T> T getValue(String name, RealData realData) {
+        Object value = getValue(name);
+        if(value==null){
+            value=realData.get();
+            setValue(name,value);
+        }
+        return (T) value;
+    }
+    /**
+     * 获取对象值
+     *
+     * @param name
+     * @param <T>
+     * @return
+     */
+    public <T> T getValue(String name, RealData realData,Long time) {
+        Object value = getValue(name);
+        if(value==null){
+            value=realData.get();
+            setValue(name,value,time);
+        }
+        return (T) value;
     }
 
     /**

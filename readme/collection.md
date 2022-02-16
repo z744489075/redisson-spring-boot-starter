@@ -28,6 +28,12 @@ public class CollectionController {
         //获取值
         RMap<String, String> test = redissonCollection.getMap("test");
         System.out.println(test);
+        //如果缓存有值从缓存里面读, 否则从接口函数读实时数据存入redis
+        Object test1 = redissonCollection.getMapValue("test", "444", () -> {
+            return "获取值";
+        }, 2000000L);
+        System.out.println("test1="+test1);
+        
         return "11";
     }
 

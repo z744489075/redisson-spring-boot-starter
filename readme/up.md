@@ -1,4 +1,15 @@
 
+> 2022-02-16:1.0.11 redissonObject,redissonCollection 增加新的方法
+    
+//如果缓存有值从缓存里面读, 否则从接口函数读实时数据存入redis后返回新值
+redissonObject.getValue("object1",()->"获取值逻辑",200213213L);
+
+//如果缓存有值从缓存里面读, 否则从接口函数读实时数据存入redis
+Object test1 = redissonCollection.getMapValue("test", "444", () -> {
+return "获取值";
+}, 2000000L);
+
+
 >2019-10-16:1.0.4更新
 
 修复@Transactional与@lock同时存在时执行顺序问题

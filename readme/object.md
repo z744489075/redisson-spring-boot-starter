@@ -21,6 +21,7 @@ public class ObjectController {
         user1.setName("test");
         user1.setAge("123");
         redissonObject.setValue("object1", user1,-1L);
+        
         return "";
     }
 
@@ -35,6 +36,9 @@ public class ObjectController {
     @RequestMapping("/object2")
     @ResponseBody
     public Object object2(User user, HttpServletRequest request, HttpServletResponse response) throws InterruptedException {
+        //如果缓存有值从缓存里面读, 否则从接口函数读实时数据存入redis
+        redissonObject.getValue("object1",()->"获取值逻辑",200213213L);
+        
         return redissonObject.getValue("object1");
     }
 
