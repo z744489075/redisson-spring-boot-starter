@@ -1,3 +1,7 @@
+>2022-02-17 
+
+增加 ```com.zengtengpeng.codec.MyJsonJacksonCodec``` 解决 LocalDateTime
+LocalDate LocalTime 序列化问题
 
 > 2022-02-16:1.0.11 redissonObject,redissonCollection 增加新的方法
     

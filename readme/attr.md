@@ -10,7 +10,7 @@ redisson.lockWatchdogTimeout | 30000| 锁定之后业务最长的执行时间,�
 redisson.dataValidTime | 1000\*60\* 30L | 数据缓存时间 默认30分钟 -1永久缓存
 redisson.lockModel | 单个key默认`可重入锁`多个key默认`红锁` | 锁的模式.如果不设置, REENTRANT(可重入锁),FAIR(公平锁),MULTIPLE(联锁),REDLOCK(红锁),READ(读锁), WRITE(写锁)
 redisson.model |SINGLE | 集群模式:SINGLE(单例),SENTINEL(哨兵),MASTERSLAVE(主从),CLUSTER(集群),REPLICATED(云托管)
-redisson.codec | org.redisson.codec.JsonJacksonCodec | Redisson的对象编码类是用于将对象进行序列化和反序列化，以实现对该对象在Redis里的读取和存储 
+redisson.codec | com.zengtengpeng.codec.MyJsonJacksonCodec | Redisson的对象编码类是用于将对象进行序列化和反序列化，以实现对该对象在Redis里的读取和存储 
 redisson.threads | 当前处理核数量 * 2 |这个线程池数量被所有RTopic对象监听器，RRemoteService调用者和RExecutorService任务共同共享。 
 redisson.nettyThreads | 当前处理核数量 * 2 | 这个线程池数量是在一个Redisson实例内，被其创建的所有分布式数据类型和服务，以及底层客户端所一同共享的线程池里保存的线程数量。 
 redisson.transportMode | NIO | TransportMode.NIO,</br>TransportMode.EPOLL - 需要依赖里有netty-transport-native-epoll包（Linux）</br> TransportMode.KQUEUE - 需要依赖里有 netty-transport-native-kqueue包（macOS） 

@@ -6,7 +6,7 @@
 
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <description>redisson-spring-boot-starter</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -119,7 +119,7 @@
             </plugin>
         </plugins>
     </build>
-    <distributionManagement>
+    <!--<distributionManagement>
         <repository>
             <id>center-maven</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
@@ -128,5 +128,5 @@
             <id>center-maven</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-    </distributionManagement>
+    </distributionManagement>-->
 </project>

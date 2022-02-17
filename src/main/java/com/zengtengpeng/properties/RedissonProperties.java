@@ -15,7 +15,7 @@ import java.net.URL;
 public class RedissonProperties {
 
     private Model model=Model.SINGLE;
-    private String codec="org.redisson.codec.JsonJacksonCodec";
+    private String codec="com.zengtengpeng.codec.MyJsonJacksonCodec";
     private Integer threads;
     private Integer nettyThreads;
     private TransportMode transportMode=TransportMode.NIO;
