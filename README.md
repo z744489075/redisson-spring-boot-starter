@@ -32,7 +32,7 @@
 <dependency>
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14</version>
 </dependency>
 ```
 
