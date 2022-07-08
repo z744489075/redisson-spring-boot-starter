@@ -5,6 +5,7 @@ import com.zengtengpeng.aop.MQAop;
 import com.zengtengpeng.mq.RedissonMQListener;
 import com.zengtengpeng.operation.RedissonBinary;
 import com.zengtengpeng.operation.RedissonCollection;
+import com.zengtengpeng.operation.RedissonCollectionCache;
 import com.zengtengpeng.operation.RedissonObject;
 import com.zengtengpeng.properties.MultipleServerConfig;
 import com.zengtengpeng.properties.RedissonProperties;
@@ -56,6 +57,11 @@ public class RedissonConfiguration {
     @ConditionalOnMissingBean(RedissonCollection.class)
     public RedissonCollection RedissonCollection() {
         return new RedissonCollection();
+    }
+    @Bean
+    @ConditionalOnMissingBean(RedissonCollectionCache.class)
+    public RedissonCollectionCache RedissonCollectionCache() {
+        return new RedissonCollectionCache();
     }
 
     @Bean

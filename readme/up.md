@@ -3,7 +3,9 @@
 增加 ```com.zengtengpeng.codec.MyJsonJacksonCodec``` 解决 LocalDateTime
 LocalDate LocalTime 序列化问题
 
-> 2022-02-16:1.0.11 redissonObject,redissonCollection 增加新的方法
+> 2022-02-16:1.0.15 增加 RedissonCollectionCache 类
+
+> 2022-02-16:1.0.14 redissonObject,redissonCollection 增加新的方法
     
 ```java
         //获取Map ,如果redis没有,则从接口函数中获取存入map 并返回

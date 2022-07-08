@@ -32,7 +32,7 @@
 <dependency>
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>1.0.14</version>
+    <version>1.0.15</version>
 </dependency>
 ```
 
@@ -77,6 +77,14 @@ public String test(User user) {
 ```
     @Resource
     private RedissonCollection redissonCollection;
+```
+
+4.RedissonCollectionCache 此集合与上面的 RedissonCollection 基本相同,但是增加单个元素的淘汰机制 详见 
+[WIKI](https://github.com/redisson/redisson/wiki/7.-%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E5%90%88#711-%E6%98%A0%E5%B0%84map%E7%9A%84%E5%85%83%E7%B4%A0%E6%B7%98%E6%B1%B0eviction%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98localcache%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87sharding)
+
+```
+    @Resource
+    private RedissonCollectionCache redissonCollectionCache;
 ```
 
 ---

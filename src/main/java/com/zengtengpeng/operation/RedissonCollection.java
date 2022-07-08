@@ -8,6 +8,7 @@ import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.api.*;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -114,9 +115,9 @@ public class RedissonCollection {
         map.putAll(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
-            map.expire(dataValidTime, TimeUnit.MILLISECONDS);
+            map.expire(Duration.ofMillis(dataValidTime));
         } else if (time != -1) {
-            map.expire(time, TimeUnit.MILLISECONDS);
+            map.expire(Duration.ofMillis(time));
         }
     }
 
@@ -132,9 +133,9 @@ public class RedissonCollection {
         map.put(key, value);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
-            map.expire(dataValidTime, TimeUnit.MILLISECONDS);
+            map.expire(Duration.ofMillis(dataValidTime));
         } else if (time != -1) {
-            map.expire(time, TimeUnit.MILLISECONDS);
+            map.expire(Duration.ofMillis(time));
         }
     }
 
@@ -218,9 +219,9 @@ public class RedissonCollection {
         list.addAll(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
-            list.expire(dataValidTime, TimeUnit.MILLISECONDS);
+            list.expire(Duration.ofMillis(dataValidTime));
         } else if (time != -1) {
-            list.expire(time, TimeUnit.MILLISECONDS);
+            list.expire(Duration.ofMillis(time));
         }
     }
 
@@ -237,9 +238,9 @@ public class RedissonCollection {
         list.add(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
-            list.expire(dataValidTime, TimeUnit.MILLISECONDS);
+            list.expire(Duration.ofMillis(dataValidTime));
         } else if (time != -1) {
-            list.expire(time, TimeUnit.MILLISECONDS);
+            list.expire(Duration.ofMillis(time));
         }
     }
 
@@ -312,9 +313,9 @@ public class RedissonCollection {
         set.addAll(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
-            set.expire(dataValidTime, TimeUnit.MILLISECONDS);
+            set.expire(Duration.ofMillis(dataValidTime));
         } else if (time != -1) {
-            set.expire(time, TimeUnit.MILLISECONDS);
+            set.expire(Duration.ofMillis(time));
         }
     }
 
@@ -331,9 +332,9 @@ public class RedissonCollection {
         set.add(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
-            set.expire(dataValidTime, TimeUnit.MILLISECONDS);
+            set.expire(Duration.ofMillis(dataValidTime));
         } else if (time != -1) {
-            set.expire(time, TimeUnit.MILLISECONDS);
+            set.expire(Duration.ofMillis(time));
         }
     }
 
