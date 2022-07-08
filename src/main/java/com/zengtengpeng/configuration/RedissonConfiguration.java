@@ -69,7 +69,7 @@ public class RedissonConfiguration {
     public RedissonClient redissonClient() {
         Config config=new Config();
         try {
-            config.setCodec((Codec) Class.forName(redissonProperties.getCodec()).newInstance());
+            config.setCodec((Codec) Class.forName(redissonProperties.getCodec()).getDeclaredConstructor().newInstance());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
