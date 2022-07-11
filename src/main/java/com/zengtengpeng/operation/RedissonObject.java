@@ -4,6 +4,7 @@ import com.zengtengpeng.func.RealData;
 import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -37,12 +38,7 @@ public class RedissonObject {
      * @return
      */
     public <T> T getValue(String name, RealData realData) {
-        Object value = getValue(name);
-        if(value==null){
-            value=realData.get();
-            setValue(name,value);
-        }
-        return (T) value;
+        return getValue(name,realData,redissonProperties.getDataValidTime());
     }
     /**
      * 获取对象值
@@ -55,7 +51,13 @@ public class RedissonObject {
         Object value = getValue(name);
         if(value==null){
             value=realData.get();
-            setValue(name,value,time);
+            if(ObjectUtils.isEmpty(value)){
+                //如果是空的,则删除
+                delete(name);
+            }else {
+                //否则insert
+                setValue(name,value,time);
+            }
         }
         return (T) value;
     }

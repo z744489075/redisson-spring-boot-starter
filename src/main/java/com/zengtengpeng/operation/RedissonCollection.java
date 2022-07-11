@@ -6,6 +6,7 @@ import com.zengtengpeng.func.RealDataMap;
 import com.zengtengpeng.func.RealDataSet;
 import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.api.*;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.time.Duration;
@@ -80,12 +81,8 @@ public class RedissonCollection {
      * @return
      */
     public <T> T getMapValue(String name, String key, RealData realData) {
-        Object o = getMap(name).get(key);
-        if(o==null){
-            o = realData.get();
-            setMapValue(name,key,o);
-        }
-        return (T) o;
+
+        return getMapValue(name,key,realData,redissonProperties.getDataValidTime());
     }
     /**
      * 先从map集合获取数据,如果没有则从接口获取
@@ -94,10 +91,15 @@ public class RedissonCollection {
      * @return
      */
     public <T> T getMapValue(String name, String key, RealData realData,Long time) {
-        Object o = getMap(name).get(key);
+        RMap<Object, Object> map = getMap(name);
+        Object o = map.get(key);
         if(o==null){
             o = realData.get();
-            setMapValue(name,key,o,time);
+            if(ObjectUtils.isEmpty(o)){
+                map.remove(key);
+            }else {
+                setMapValue(name,key,o,time);
+            }
         }
         return (T) o;
     }
