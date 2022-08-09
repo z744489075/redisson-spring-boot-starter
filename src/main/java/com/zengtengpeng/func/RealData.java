@@ -8,6 +8,6 @@ package com.zengtengpeng.func;
  * @date 2022/2/16 15:10
  */
 @FunctionalInterface
-public interface RealData {
-    Object get();
+public interface RealData<T> {
+    T get();
 }

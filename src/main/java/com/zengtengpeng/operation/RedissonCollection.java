@@ -1,9 +1,6 @@
 package com.zengtengpeng.operation;
 
-import com.zengtengpeng.func.RealData;
-import com.zengtengpeng.func.RealDataList;
-import com.zengtengpeng.func.RealDataMap;
-import com.zengtengpeng.func.RealDataSet;
+import com.zengtengpeng.func.*;
 import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.api.*;
 import org.springframework.util.ObjectUtils;
@@ -36,6 +33,7 @@ public class RedissonCollection {
     public <K, V> RMap<K, V> getMap(String name) {
         return redissonClient.getMap(name);
     }
+
     /**
      * 获取map集合,如果没有则通过实时数据
      *
@@ -44,9 +42,10 @@ public class RedissonCollection {
      * @param <V>
      * @return
      */
-    public <K, V> RMap<K, V> getMap(String name, RealDataMap realDataMap){
-        return getMap(name,realDataMap,redissonProperties.getDataValidTime());
+    public <K, V> RMap<K, V> getMap(String name, RealDataMap<K, V> realDataMap) {
+        return getMap(name, realDataMap, redissonProperties.getDataValidTime());
     }
+
     /**
      * 获取map集合,如果没有则通过实时数据
      *
@@ -55,11 +54,11 @@ public class RedissonCollection {
      * @param <V>
      * @return
      */
-    public <K, V> RMap<K, V> getMap(String name, RealDataMap realDataMap,Long time) {
+    public <K, V> RMap<K, V> getMap(String name, RealDataMap<K, V> realDataMap, Long time) {
         RMap<Object, Object> map = redissonClient.getMap(name);
-        if(map==null ||map.size()==0){
+        if (map == null || map.size() == 0) {
             Map objectObjectMap = realDataMap.get();
-            setMapValues(name,objectObjectMap,time);
+            setMapValues(name, objectObjectMap, time);
         }
         return redissonClient.getMap(name);
     }
@@ -71,7 +70,8 @@ public class RedissonCollection {
      * @return
      */
     public <T> T getMapValue(String name, String key) {
-        return (T) getMap(name).get(key);
+        RMap<Object, T> map = getMap(name);
+        return map.get(key);
     }
 
     /**
@@ -80,28 +80,52 @@ public class RedissonCollection {
      * @param name
      * @return
      */
-    public <T> T getMapValue(String name, String key, RealData realData) {
+    public <T> T getMapValue(String name, String key, RealData<T> realData) {
 
-        return getMapValue(name,key,realData,redissonProperties.getDataValidTime());
+        return getMapValue(name, key, realData, redissonProperties.getDataValidTime());
     }
+
     /**
      * 先从map集合获取数据,如果没有则从接口获取
      *
      * @param name
      * @return
      */
-    public <T> T getMapValue(String name, String key, RealData realData,Long time) {
-        RMap<Object, Object> map = getMap(name);
-        Object o = map.get(key);
-        if(o==null){
+    public <T> T getMapValue(String name, String key, RealData<T> realData, Long time) {
+        RMap<Object, T> map = getMap(name);
+        T o = map.get(key);
+        if (o == null) {
             o = realData.get();
-            if(ObjectUtils.isEmpty(o)){
+            if (ObjectUtils.isEmpty(o)) {
                 map.remove(key);
-            }else {
-                setMapValue(name,key,o,time);
+            } else {
+                setMapValue(name, key, o, time);
             }
         }
-        return (T) o;
+        return o;
+    }
+
+    /**
+     * 先从map集合获取数据,如果没有则从接口获取
+     *
+     * @param name
+     * @return
+     */
+    public <T> T getMapValue(String name, String key, RealData<T> realData, DataCache<T> dataCache, Long time) {
+        RMap<Object, T> map = getMap(name);
+        T o = map.get(key);
+        if (o == null) {
+            o = realData.get();
+            if (ObjectUtils.isEmpty(o)) {
+                map.remove(key);
+            } else {
+                Boolean cache = dataCache.isCache(o);
+                if (cache) {
+                    setMapValue(name, key, o, time);
+                }
+            }
+        }
+        return o;
     }
 
     /**
@@ -112,8 +136,8 @@ public class RedissonCollection {
      * @param time 缓存时间,单位毫秒 -1永久缓存
      * @return
      */
-    public void setMapValues(String name, Map data, Long time) {
-        RMap map = redissonClient.getMap(name);
+    public <K,V> void setMapValues(String name, Map<K,V> data, Long time) {
+        RMap<K,V> map = redissonClient.getMap(name);
         map.putAll(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
@@ -130,8 +154,8 @@ public class RedissonCollection {
      * @param time 缓存时间,单位毫秒 -1永久缓存
      * @return
      */
-    public void setMapValue(String name, String key, Object value, Long time) {
-        RMap map = redissonClient.getMap(name);
+    public <T> void setMapValue(String name, String key, T value, Long time) {
+        RMap<String,T> map = redissonClient.getMap(name);
         map.put(key, value);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
@@ -148,7 +172,7 @@ public class RedissonCollection {
      * @param data
      * @return
      */
-    public void setMapValues(String name, Map data) {
+    public <K,V> void setMapValues(String name, Map<K,V> data) {
         setMapValues(name, data, redissonProperties.getDataValidTime());
     }
 
@@ -171,17 +195,18 @@ public class RedissonCollection {
     public <T> RList<T> getList(String name) {
         return redissonClient.getList(name);
     }
+
     /**
      * 获取List集合 如果没有则通过实时数据获取
      *
      * @param name
      * @return
      */
-    public <T> RList<T> getList(String name,RealDataList realDataList, Long time) {
+    public <T> RList<T> getList(String name, RealDataList<T> realDataList, Long time) {
         RList<Object> list = getList(name);
-        if(list==null || list.size()==0){
-            List objects = realDataList.get();
-            setListValues(name,objects,time);
+        if (list == null || list.size() == 0) {
+            List<T> objects = realDataList.get();
+            setListValues(name, objects, time);
         }
         return getList(name);
     }
@@ -192,8 +217,8 @@ public class RedissonCollection {
      * @param name
      * @return
      */
-    public <T> RList<T> getList(String name, RealDataList realDataList) {
-        return getList(name,realDataList,redissonProperties.getDataValidTime());
+    public <T> RList<T> getList(String name, RealDataList<T> realDataList) {
+        return getList(name, realDataList, redissonProperties.getDataValidTime());
     }
 
     /**
@@ -202,10 +227,10 @@ public class RedissonCollection {
      * @param name
      * @return
      */
-    public <T> T getListValue(String name,Integer index) {
-        return (T) getList(name).get(index);
+    public <T> T getListValue(String name, Integer index) {
+        RList<T> list = getList(name);
+        return list.get(index);
     }
-
 
 
     /**
@@ -216,8 +241,8 @@ public class RedissonCollection {
      * @param time 缓存时间,单位毫秒 -1永久缓存
      * @return
      */
-    public void setListValues(String name, List data, Long time) {
-        RList list = redissonClient.getList(name);
+    public <T> void setListValues(String name, List<T> data, Long time) {
+        RList<T> list = redissonClient.getList(name);
         list.addAll(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
@@ -235,8 +260,8 @@ public class RedissonCollection {
      * @param time 缓存时间,单位毫秒 -1永久缓存
      * @return
      */
-    public void setListValue(String name, Object data, Long time) {
-        RList list = redissonClient.getList(name);
+    public <T> void setListValue(String name, T data, Long time) {
+        RList<T> list = redissonClient.getList(name);
         list.add(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
@@ -253,7 +278,7 @@ public class RedissonCollection {
      * @param data
      * @return
      */
-    public void setListValues(String name, List data) {
+    public <T> void setListValues(String name, List<T> data) {
         setListValues(name, data, redissonProperties.getDataValidTime());
     }
 
@@ -277,17 +302,18 @@ public class RedissonCollection {
     public <T> RSet<T> getSet(String name) {
         return redissonClient.getSet(name);
     }
+
     /**
      * 获取List集合 如果没有则通过实时数据获取
      *
      * @param name
      * @return
      */
-    public <T> RSet<T> getSet(String name, RealDataSet realDataSet, Long time) {
+    public <T> RSet<T> getSet(String name, RealDataSet<T> realDataSet, Long time) {
         RSet<Object> set = getSet(name);
-        if(set==null || set.size()==0){
-            Set<Object> objects = realDataSet.get();
-            setSetValues(name,objects,time);
+        if (set == null || set.size() == 0) {
+            Set<T> objects = realDataSet.get();
+            setSetValues(name, objects, time);
         }
         return getSet(name);
     }
@@ -298,8 +324,8 @@ public class RedissonCollection {
      * @param name
      * @return
      */
-    public <T> RSet<T> getSet(String name, RealDataSet realDataSet) {
-        return getSet(name,realDataSet,redissonProperties.getDataValidTime());
+    public <T> RSet<T> getSet(String name, RealDataSet<T> realDataSet) {
+        return getSet(name, realDataSet, redissonProperties.getDataValidTime());
     }
 
     /**
@@ -310,8 +336,8 @@ public class RedissonCollection {
      * @param time 缓存时间,单位毫秒 -1永久缓存
      * @return
      */
-    public void setSetValues(String name, Set data, Long time) {
-        RSet set = redissonClient.getSet(name);
+    public <T> void setSetValues(String name, Set<T> data, Long time) {
+        RSet<T> set = redissonClient.getSet(name);
         set.addAll(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
@@ -329,8 +355,8 @@ public class RedissonCollection {
      * @param time 缓存时间,单位毫秒 -1永久缓存
      * @return
      */
-    public void setSetValue(String name, Object data, Long time) {
-        RSet set = redissonClient.getSet(name);
+    public <T> void setSetValue(String name, T data, Long time) {
+        RSet<T> set = redissonClient.getSet(name);
         set.add(data);
         Long dataValidTime = redissonProperties.getDataValidTime();
         if (time == null) {
@@ -347,7 +373,7 @@ public class RedissonCollection {
      * @param data
      * @return
      */
-    public void setSetValues(String name, Set data) {
+    public <T> void setSetValues(String name, Set<T> data) {
         setSetValues(name, data, redissonProperties.getDataValidTime());
     }
 

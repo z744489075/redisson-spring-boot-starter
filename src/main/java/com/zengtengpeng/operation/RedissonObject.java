@@ -1,5 +1,6 @@
 package com.zengtengpeng.operation;
 
+import com.zengtengpeng.func.DataCache;
 import com.zengtengpeng.func.RealData;
 import com.zengtengpeng.properties.RedissonProperties;
 import org.redisson.api.RBucket;
@@ -30,6 +31,7 @@ public class RedissonObject {
         RBucket<T> bucket = redissonClient.getBucket(name);
         return bucket.get();
     }
+
     /**
      * 获取对象值
      *
@@ -37,9 +39,10 @@ public class RedissonObject {
      * @param <T>
      * @return
      */
-    public <T> T getValue(String name, RealData realData) {
-        return getValue(name,realData,redissonProperties.getDataValidTime());
+    public <T> T getValue(String name, RealData<T> realData) {
+        return getValue(name, realData, redissonProperties.getDataValidTime());
     }
+
     /**
      * 获取对象值
      *
@@ -47,19 +50,44 @@ public class RedissonObject {
      * @param <T>
      * @return
      */
-    public <T> T getValue(String name, RealData realData,Long time) {
-        Object value = getValue(name);
-        if(value==null){
-            value=realData.get();
-            if(ObjectUtils.isEmpty(value)){
+    public <T> T getValue(String name, RealData<T> realData, Long time) {
+        T value = getValue(name);
+        if (value == null) {
+            value = realData.get();
+            if (ObjectUtils.isEmpty(value)) {
                 //如果是空的,则删除
                 delete(name);
-            }else {
+            } else {
                 //否则insert
-                setValue(name,value,time);
+                setValue(name, value, time);
             }
         }
-        return (T) value;
+        return value;
+    }
+
+    /**
+     * 获取对象值
+     *
+     * @param name
+     * @param <T>
+     * @return
+     */
+    public <T> T getValue(String name, RealData<T> realData, DataCache<T> dataCache, Long time) {
+        T value = getValue(name);
+        if (value == null) {
+            value = realData.get();
+            if (ObjectUtils.isEmpty(value)) {
+                //如果是空的,则删除
+                delete(name);
+            } else {
+                Boolean cache = dataCache.isCache(value);
+                if (cache) {
+                    //否则insert
+                    setValue(name, value, time);
+                }
+            }
+        }
+        return value;
     }
 
     /**
@@ -81,7 +109,7 @@ public class RedissonObject {
      * @return
      */
     public <T> void setValue(String name, T value) {
-        setValue(name,value,redissonProperties.getDataValidTime());
+        setValue(name, value, redissonProperties.getDataValidTime());
     }
 
     /**
@@ -94,9 +122,9 @@ public class RedissonObject {
      */
     public <T> void setValue(String name, T value, Long time) {
         RBucket<Object> bucket = redissonClient.getBucket(name);
-        if(time==-1){
+        if (time == -1) {
             bucket.set(value);
-        }else {
+        } else {
             bucket.set(value, time, TimeUnit.MILLISECONDS);
         }
     }
@@ -112,9 +140,9 @@ public class RedissonObject {
     public <T> Boolean trySetValue(String name, T value, Long time) {
         RBucket<Object> bucket = redissonClient.getBucket(name);
         boolean b;
-        if(time==-1){
+        if (time == -1) {
             b = bucket.trySet(value);
-        }else {
+        } else {
             b = bucket.trySet(value, time, TimeUnit.MILLISECONDS);
         }
         return b;
@@ -128,7 +156,7 @@ public class RedissonObject {
      * @return true 设置成功,false 值存在,不设置
      */
     public <T> Boolean trySetValue(String name, T value) {
-        return trySetValue(name,value,redissonProperties.getDataValidTime());
+        return trySetValue(name, value, redissonProperties.getDataValidTime());
     }
 
     /**
@@ -140,8 +168,6 @@ public class RedissonObject {
     public Boolean delete(String name) {
         return redissonClient.getBucket(name).delete();
     }
-
-
 
 
 }
