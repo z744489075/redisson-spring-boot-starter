@@ -69,7 +69,9 @@ public class RedissonConfiguration {
     public RedissonClient redissonClient() {
         Config config=new Config();
         try {
-            config.setCodec((Codec) Class.forName(redissonProperties.getCodec()).getDeclaredConstructor().newInstance());
+            if(redissonProperties.getCodec()!=null && !"".equals(redissonProperties.getCodec())){
+                config.setCodec((Codec) Class.forName(redissonProperties.getCodec()).getDeclaredConstructor().newInstance());
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -174,6 +176,7 @@ public class RedissonConfiguration {
                 sentinelServersConfig.setSubscriptionConnectionMinimumIdleSize(multipleServerConfig.getSubscriptionConnectionMinimumIdleSize());
                 sentinelServersConfig.setSubscriptionConnectionPoolSize(multipleServerConfig.getSubscriptionConnectionPoolSize());
                 sentinelServersConfig.setDnsMonitoringInterval(multipleServerConfig.getDnsMonitoringInterval());
+                sentinelServersConfig.setCheckSentinelsList(multipleServerConfig.getCheckSentinelsList());
                 try {
                     sentinelServersConfig.setLoadBalancer((LoadBalancer) Class.forName(multipleServerConfig.getLoadBalancer()).newInstance());
                 } catch (Exception e) {

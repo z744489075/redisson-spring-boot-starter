@@ -35,6 +35,16 @@ public class MultipleServerConfig {
     //哨兵模式
     private String masterName;
 
+    private Boolean checkSentinelsList=true;
+
+    public Boolean getCheckSentinelsList() {
+        return checkSentinelsList;
+    }
+
+    public void setCheckSentinelsList(Boolean checkSentinelsList) {
+        this.checkSentinelsList = checkSentinelsList;
+    }
+
     public String getMasterName() {
         return masterName;
     }
