@@ -2,19 +2,18 @@ package com.zengtengpeng.configuration;
 
 import com.zengtengpeng.aop.LockAop;
 import com.zengtengpeng.aop.MQAop;
-import com.zengtengpeng.mq.RedissonMQListener;
 import com.zengtengpeng.operation.RedissonBinary;
 import com.zengtengpeng.operation.RedissonCollection;
 import com.zengtengpeng.operation.RedissonCollectionCache;
 import com.zengtengpeng.operation.RedissonObject;
 import com.zengtengpeng.properties.MultipleServerConfig;
 import com.zengtengpeng.properties.RedissonProperties;
+import jakarta.annotation.Resource;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.Codec;
 import org.redisson.config.*;
 import org.redisson.connection.balancer.LoadBalancer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,7 +26,7 @@ import org.springframework.util.StringUtils;
 @ConditionalOnClass(RedissonProperties.class)
 public class RedissonConfiguration {
 
-    @Autowired
+    @Resource
     private RedissonProperties redissonProperties;
 
     @Bean

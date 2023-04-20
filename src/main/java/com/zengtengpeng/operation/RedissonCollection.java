@@ -2,10 +2,10 @@ package com.zengtengpeng.operation;
 
 import com.zengtengpeng.func.*;
 import com.zengtengpeng.properties.RedissonProperties;
+import jakarta.annotation.Resource;
 import org.redisson.api.*;
 import org.springframework.util.ObjectUtils;
 
-import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;

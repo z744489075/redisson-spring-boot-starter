@@ -2,10 +2,10 @@ package com.zengtengpeng.operation;
 
 import com.zengtengpeng.func.*;
 import com.zengtengpeng.properties.RedissonProperties;
+import jakarta.annotation.Resource;
 import org.redisson.api.*;
 import org.springframework.util.ObjectUtils;
 
-import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +13,13 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 操作映射缓存集合
- */
+ * 操作映射缓存集合 请勿使用 RMapCache
+ * 高并发情况下无法自动淘汰元素,导致redis内存溢出,
+ * 请使用 Object对象.利用redis淘汰机制淘汰
+ * @author ztp
+ * @date 2023/2/14 15:17
+*/
+@Deprecated
 public class RedissonCollectionCache {
 
     @Resource

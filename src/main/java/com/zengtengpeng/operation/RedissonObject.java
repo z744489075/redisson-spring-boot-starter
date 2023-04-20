@@ -3,11 +3,11 @@ package com.zengtengpeng.operation;
 import com.zengtengpeng.func.DataCache;
 import com.zengtengpeng.func.RealData;
 import com.zengtengpeng.properties.RedissonProperties;
+import jakarta.annotation.Resource;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.util.ObjectUtils;
 
-import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**

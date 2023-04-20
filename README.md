@@ -32,9 +32,19 @@
 <dependency>
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>1.0.17</version>
+    <version>1.0.18</version>
 </dependency>
 ```
+如果是spring3X
+
+```xml
+<dependency>
+    <groupId>com.zengtengpeng</groupId>
+    <artifactId>redisson-spring-boot-starter</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
+
 
 2. 在  `application.properties` 增加
 

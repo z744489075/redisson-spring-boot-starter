@@ -3,6 +3,7 @@ package com.zengtengpeng.configuration;
 import com.zengtengpeng.annotation.EnableCache;
 import com.zengtengpeng.mq.RedissonMQListener;
 import com.zengtengpeng.properties.RedissonProperties;
+import jakarta.annotation.Resource;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
@@ -22,7 +23,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +50,6 @@ public class CacheConfiguration implements ImportAware {
 
     @Resource
     private RedissonClient redissonClient;
-    @Autowired
-    private RedissonProperties redissonProperties;
 
     @Bean
     CacheManager cacheManager() {

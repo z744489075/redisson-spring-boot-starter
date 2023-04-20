@@ -1,8 +1,8 @@
 package com.zengtengpeng.operation;
 
+import jakarta.annotation.Resource;
 import org.redisson.api.*;
 
-import javax.annotation.Resource;
 import java.io.InputStream;
 import java.io.OutputStream;
 
