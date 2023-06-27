@@ -3,7 +3,7 @@ package com.zengtengpeng.configuration;
 import com.zengtengpeng.annotation.EnableCache;
 import com.zengtengpeng.mq.RedissonMQListener;
 import com.zengtengpeng.properties.RedissonProperties;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
@@ -48,7 +48,7 @@ public class CacheConfiguration implements ImportAware {
      */
     private long maxIdleTime;
 
-    @Resource
+    @Autowired
     private RedissonClient redissonClient;
 
     @Bean

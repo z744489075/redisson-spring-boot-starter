@@ -2,7 +2,7 @@ package com.zengtengpeng.operation;
 
 import com.zengtengpeng.func.*;
 import com.zengtengpeng.properties.RedissonProperties;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.redisson.api.*;
 import org.springframework.util.ObjectUtils;
 
@@ -22,9 +22,9 @@ import java.util.concurrent.TimeUnit;
 @Deprecated
 public class RedissonCollectionCache {
 
-    @Resource
+    @Autowired
     private RedissonClient redissonClient;
-    @Resource
+    @Autowired
     private RedissonProperties redissonProperties;
 
     /**

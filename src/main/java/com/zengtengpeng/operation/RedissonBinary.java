@@ -1,6 +1,6 @@
 package com.zengtengpeng.operation;
 
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.redisson.api.*;
 
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.io.OutputStream;
  */
 public class RedissonBinary {
 
-    @Resource
+    @Autowired
     private RedissonClient redissonClient;
 
     /**

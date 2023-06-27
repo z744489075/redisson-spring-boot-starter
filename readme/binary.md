@@ -2,7 +2,7 @@
 @Controller
 public class BinaryController {
 
-    @Resource
+    @Autowired
     private RedissonBinary redissonBinary;
 
     /**

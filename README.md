@@ -75,17 +75,17 @@ public String test(User user) {
 
 1.RedissonObject 这个是比较通用的模板,任何对象都可以存在这里面,在spring 容器中注入对象即可 [demo实例](readme/object.md)
 ```
-    @Resource
+    @Autowired
     private RedissonObject redissonObject;
 ```
 2.RedissonBinary 这个是存储二进制的模板.可以存放图片之内的二进制文件,在spring 容器中注入对象即可 [demo实例](readme/binary.md)
 ```
-    @Resource
+    @Autowired
     private RedissonBinary redissonBinary;
 ```
 3.RedissonCollection 这个是集合模板,可以存放`Map`,`List`,`Set`集合元素,在spring 容器中注入对象即可 [demo实例](readme/collection.md)
 ```
-    @Resource
+    @Autowired
     private RedissonCollection redissonCollection;
 ```
 
@@ -93,7 +93,7 @@ public String test(User user) {
 [WIKI](https://github.com/redisson/redisson/wiki/7.-%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E5%90%88#711-%E6%98%A0%E5%B0%84map%E7%9A%84%E5%85%83%E7%B4%A0%E6%B7%98%E6%B1%B0eviction%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98localcache%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87sharding)
 
 ```
-    @Resource
+    @Autowired
     private RedissonCollectionCache redissonCollectionCache;
 ```
 

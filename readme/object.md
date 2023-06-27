@@ -3,7 +3,7 @@
 @Controller
 public class ObjectController {
 
-    @Resource
+    @Autowired
     private RedissonObject redissonObject;
 
     /**

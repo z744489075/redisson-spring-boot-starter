@@ -3,7 +3,7 @@ package com.zengtengpeng.operation;
 import com.zengtengpeng.func.DataCache;
 import com.zengtengpeng.func.RealData;
 import com.zengtengpeng.properties.RedissonProperties;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.util.ObjectUtils;
@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedissonObject {
 
-    @Resource
+    @Autowired
     private RedissonClient redissonClient;
-    @Resource
+    @Autowired
     private RedissonProperties redissonProperties;
 
     /**

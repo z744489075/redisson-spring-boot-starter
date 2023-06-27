@@ -3,7 +3,7 @@
 @Controller
 public class CollectionController {
 
-    @Resource
+    @Autowired
     private RedissonCollection redissonCollection;
 
     /**

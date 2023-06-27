@@ -2,18 +2,20 @@ package com.zengtengpeng.configuration;
 
 import com.zengtengpeng.aop.LockAop;
 import com.zengtengpeng.aop.MQAop;
+import com.zengtengpeng.codec.MyJsonJacksonCodec;
 import com.zengtengpeng.operation.RedissonBinary;
 import com.zengtengpeng.operation.RedissonCollection;
 import com.zengtengpeng.operation.RedissonCollectionCache;
 import com.zengtengpeng.operation.RedissonObject;
 import com.zengtengpeng.properties.MultipleServerConfig;
 import com.zengtengpeng.properties.RedissonProperties;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.Codec;
 import org.redisson.config.*;
 import org.redisson.connection.balancer.LoadBalancer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,7 +28,7 @@ import org.springframework.util.StringUtils;
 @ConditionalOnClass(RedissonProperties.class)
 public class RedissonConfiguration {
 
-    @Resource
+    @Autowired
     private RedissonProperties redissonProperties;
 
     @Bean
@@ -72,7 +74,8 @@ public class RedissonConfiguration {
                 config.setCodec((Codec) Class.forName(redissonProperties.getCodec()).getDeclaredConstructor().newInstance());
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            //todo 原生无法使用 Class.forName 待解决
+            config.setCodec(new MyJsonJacksonCodec());
         }
         config.setTransportMode(redissonProperties.getTransportMode());
         if(redissonProperties.getThreads()!=null){

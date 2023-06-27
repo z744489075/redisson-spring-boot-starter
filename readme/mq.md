@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 @Controller
 public class MQController {
 
-    @Resource
+    @Autowired
     private RedissonClient redissonClient;
 
 
