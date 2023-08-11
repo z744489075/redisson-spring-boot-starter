@@ -6,7 +6,7 @@
 
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>3.0.1</version>
+    <version>3.0.2</version>
     <description>redisson-spring-boot-starter</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -15,8 +15,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.22.1</version>
+            <version>3.23.2</version>
         </dependency>
     </dependencies>
     <licenses>

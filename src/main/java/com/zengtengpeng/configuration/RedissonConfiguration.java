@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 @Configuration
@@ -109,6 +110,9 @@ public class RedissonConfiguration {
                 singleServerConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 singleServerConfig.setKeepAlive(redissonProperties.getKeepAlive());
                 singleServerConfig.setPassword(redissonProperties.getPassword());
+                if(!ObjectUtils.isEmpty(redissonProperties.getUsername())){
+                    singleServerConfig.setUsername(redissonProperties.getUsername());
+                }
                 singleServerConfig.setPingConnectionInterval(redissonProperties.getPingConnectionInterval());
                 singleServerConfig.setRetryAttempts(redissonProperties.getRetryAttempts());
                 singleServerConfig.setRetryInterval(redissonProperties.getRetryInterval());
@@ -149,6 +153,9 @@ public class RedissonConfiguration {
                 clusterServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 clusterServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
                 clusterServersConfig.setPassword(redissonProperties.getPassword());
+                if(!ObjectUtils.isEmpty(redissonProperties.getUsername())){
+                    clusterServersConfig.setUsername(redissonProperties.getUsername());
+                }
                 clusterServersConfig.setPingConnectionInterval(redissonProperties.getPingConnectionInterval());
                 clusterServersConfig.setRetryAttempts(redissonProperties.getRetryAttempts());
                 clusterServersConfig.setRetryInterval(redissonProperties.getRetryInterval());
@@ -192,6 +199,9 @@ public class RedissonConfiguration {
                 sentinelServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 sentinelServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
                 sentinelServersConfig.setPassword(redissonProperties.getPassword());
+                if(!ObjectUtils.isEmpty(redissonProperties.getUsername())){
+                    sentinelServersConfig.setUsername(redissonProperties.getUsername());
+                }
                 sentinelServersConfig.setPingConnectionInterval(redissonProperties.getPingConnectionInterval());
                 sentinelServersConfig.setRetryAttempts(redissonProperties.getRetryAttempts());
                 sentinelServersConfig.setRetryInterval(redissonProperties.getRetryInterval());
@@ -233,6 +243,9 @@ public class RedissonConfiguration {
                 replicatedServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 replicatedServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
                 replicatedServersConfig.setPassword(redissonProperties.getPassword());
+                if(!ObjectUtils.isEmpty(redissonProperties.getUsername())){
+                    replicatedServersConfig.setUsername(redissonProperties.getUsername());
+                }
                 replicatedServersConfig.setPingConnectionInterval(redissonProperties.getPingConnectionInterval());
                 replicatedServersConfig.setRetryAttempts(redissonProperties.getRetryAttempts());
                 replicatedServersConfig.setRetryInterval(redissonProperties.getRetryInterval());
@@ -278,6 +291,9 @@ public class RedissonConfiguration {
                 masterSlaveServersConfig.setIdleConnectionTimeout(redissonProperties.getIdleConnectionTimeout());
                 masterSlaveServersConfig.setKeepAlive(redissonProperties.getKeepAlive());
                 masterSlaveServersConfig.setPassword(redissonProperties.getPassword());
+                if(!ObjectUtils.isEmpty(redissonProperties.getUsername())){
+                    masterSlaveServersConfig.setUsername(redissonProperties.getUsername());
+                }
                 masterSlaveServersConfig.setPingConnectionInterval(redissonProperties.getPingConnectionInterval());
                 masterSlaveServersConfig.setRetryAttempts(redissonProperties.getRetryAttempts());
                 masterSlaveServersConfig.setRetryInterval(redissonProperties.getRetryInterval());

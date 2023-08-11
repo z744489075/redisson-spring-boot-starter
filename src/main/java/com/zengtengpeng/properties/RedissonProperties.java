@@ -28,6 +28,7 @@ public class RedissonProperties {
     private Integer retryAttempts = 3;
     private Integer retryInterval = 1500;
     private String password;
+    private String username;
     private Integer subscriptionsPerConnection = 5;
     private String clientName;
     private Boolean sslEnableEndpointIdentification = true;
@@ -289,6 +290,14 @@ public class RedissonProperties {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getSubscriptionsPerConnection() {

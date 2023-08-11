@@ -2,6 +2,7 @@
 
 属性名 | 默认值|备注
 ---|    ---    |---
+redisson.username | | redis用户名(可以不填,只有设置了才填)
 redisson.password | |用于节点身份验证的密码。 
 redisson.pingConnectionInterval | 30000| 连接时间,超过这个时间则报错
 redisson.timeout | 3000|等待节点回复命令的时间。该时间从命令发送成功时开始计时。 
