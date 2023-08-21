@@ -2,6 +2,7 @@ package com.zengtengpeng.aot;
 
 import com.zengtengpeng.aop.LockAop;
 import com.zengtengpeng.aop.MQAop;
+import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
@@ -26,6 +27,9 @@ public class RedisLockAotRuntimeHints implements RuntimeHintsRegistrar {
                 MQAop.class
 
         ).forEach(x -> hints.reflection().registerType(x, MemberCategory.values()));
+
+
+        hints.proxies().registerJdkProxy(AopProxyUtils.completeJdkProxyInterfaces(LockAop.class, MQAop.class));
     }
 
 
