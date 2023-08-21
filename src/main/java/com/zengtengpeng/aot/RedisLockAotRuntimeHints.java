@@ -1,5 +1,7 @@
 package com.zengtengpeng.aot;
 
+import com.zengtengpeng.annotation.Lock;
+import com.zengtengpeng.annotation.MQPublish;
 import com.zengtengpeng.aop.LockAop;
 import com.zengtengpeng.aop.MQAop;
 import org.springframework.aop.SpringProxy;
@@ -27,8 +29,9 @@ public class RedisLockAotRuntimeHints implements RuntimeHintsRegistrar {
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
         Stream.of(
                 LockAop.class,
-                MQAop.class
-
+                MQAop.class,
+                Lock.class,
+                MQPublish.class
         ).forEach(x -> hints.reflection().registerType(x, MemberCategory.values()));
 
     }
