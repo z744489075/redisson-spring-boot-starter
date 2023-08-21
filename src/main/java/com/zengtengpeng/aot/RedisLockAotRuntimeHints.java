@@ -31,12 +31,6 @@ public class RedisLockAotRuntimeHints implements RuntimeHintsRegistrar {
 
         ).forEach(x -> hints.reflection().registerType(x, MemberCategory.values()));
 
-        hints.proxies().registerJdkProxy(LockAop.class,
-                MQAop.class,
-                SpringProxy.class,
-                DecoratingProxy.class,
-                Advised.class
-        );
     }
 
 
