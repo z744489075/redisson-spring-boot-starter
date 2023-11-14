@@ -12,11 +12,11 @@ import java.util.List;
 public class MultipleServerConfig {
 
     private String loadBalancer = "org.redisson.connection.balancer.RoundRobinLoadBalancer";
-    private Integer slaveConnectionMinimumIdleSize = 32;
+    private Integer slaveConnectionMinimumIdleSize = 12;
     private Integer slaveConnectionPoolSize = 64;
     private Integer failedSlaveReconnectionInterval = 3000;
     private Integer failedSlaveCheckInterval = 180000;
-    private Integer masterConnectionMinimumIdleSize = 32;
+    private Integer masterConnectionMinimumIdleSize = 12;
     private Integer masterConnectionPoolSize = 64;
     private ReadMode readMode=ReadMode.SLAVE;
     private SubscriptionMode subscriptionMode=SubscriptionMode.SLAVE;
