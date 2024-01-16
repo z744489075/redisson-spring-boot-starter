@@ -41,7 +41,7 @@
 <dependency>
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.5</version>
 </dependency>
 ```
 

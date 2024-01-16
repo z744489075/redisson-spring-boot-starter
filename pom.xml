@@ -6,12 +6,12 @@
 
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>3.0.4</version>
+    <version>3.0.5</version>
     <description>redisson-spring-boot-starter</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.1.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <properties>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.24.3</version>
+            <version>3.25.2</version>
         </dependency>
     </dependencies>
     <licenses>
