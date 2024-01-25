@@ -8,6 +8,7 @@ import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.util.ObjectUtils;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -125,7 +126,7 @@ public class RedissonObject {
         if (time == -1) {
             bucket.set(value);
         } else {
-            bucket.set(value, time, TimeUnit.MILLISECONDS);
+            bucket.set(value, Duration.ofMillis(time));
         }
     }
 
@@ -141,9 +142,9 @@ public class RedissonObject {
         RBucket<Object> bucket = redissonClient.getBucket(name);
         boolean b;
         if (time == -1) {
-            b = bucket.trySet(value);
+            b = bucket.setIfAbsent(value);
         } else {
-            b = bucket.trySet(value, time, TimeUnit.MILLISECONDS);
+            b = bucket.setIfAbsent(value, Duration.ofMillis(time));
         }
         return b;
     }
@@ -166,7 +167,8 @@ public class RedissonObject {
      * @return true 删除成功,false 不成功
      */
     public Boolean delete(String name) {
-        return redissonClient.getBucket(name).delete();
+
+        return redissonClient.getKeys().delete(name)>0;
     }
 
 

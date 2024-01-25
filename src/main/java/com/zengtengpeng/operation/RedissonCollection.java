@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 操作集合
@@ -56,8 +55,8 @@ public class RedissonCollection {
      */
     public <K, V> RMap<K, V> getMap(String name, RealDataMap<K, V> realDataMap, Long time) {
         RMap<Object, Object> map = redissonClient.getMap(name);
-        if (map == null || map.size() == 0) {
-            Map objectObjectMap = realDataMap.get();
+        if (map == null || map.isEmpty()) {
+            Map<K, V> objectObjectMap = realDataMap.get();
             setMapValues(name, objectObjectMap, time);
         }
         return redissonClient.getMap(name);
@@ -204,7 +203,7 @@ public class RedissonCollection {
      */
     public <T> RList<T> getList(String name, RealDataList<T> realDataList, Long time) {
         RList<Object> list = getList(name);
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             List<T> objects = realDataList.get();
             setListValues(name, objects, time);
         }
@@ -311,7 +310,7 @@ public class RedissonCollection {
      */
     public <T> RSet<T> getSet(String name, RealDataSet<T> realDataSet, Long time) {
         RSet<Object> set = getSet(name);
-        if (set == null || set.size() == 0) {
+        if (set == null || set.isEmpty()) {
             Set<T> objects = realDataSet.get();
             setSetValues(name, objects, time);
         }

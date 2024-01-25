@@ -92,8 +92,7 @@ public class RedissonBinary {
      * @return true 删除成功,false 不成功
      */
     public Boolean delete(String name) {
-        RBinaryStream binaryStream = redissonClient.getBinaryStream(name);
-        return binaryStream.delete();
+        return redissonClient.getKeys().delete(name)>0;
     }
 
 
