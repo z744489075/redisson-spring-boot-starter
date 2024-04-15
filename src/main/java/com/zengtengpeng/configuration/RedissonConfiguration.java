@@ -58,14 +58,15 @@ public class RedissonConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(RedissonObjectMultiLocalCache.class)
-    public RedissonObjectMultiLocalCache redissonObjectMultiLocalCache() {
-        return new RedissonObjectMultiLocalCache();
+    @ConditionalOnMissingBean(RedissonCollectionLocalCache.class)
+    public RedissonCollectionLocalCache redissonCollectionLocalCache() {
+        return new RedissonCollectionLocalCache();
     }
+
 
     @Bean
     @ConditionalOnMissingBean(RedissonCollectionCache.class)
-    public RedissonCollectionCache redissonCollectionLocalCache() {
+    public RedissonCollectionCache redissonCollectionCache() {
         return new RedissonCollectionCache();
     }
 

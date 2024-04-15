@@ -6,7 +6,7 @@
 
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <description>redisson-spring-boot-starter</description>
     <parent>
         <groupId>org.springframework.boot</groupId>

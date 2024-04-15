@@ -18,7 +18,7 @@
 
 ```
     @Autowired
-    private RedissonObjectMultiLocalCache redissonObjectMultiLocalCache;
+    private RedissonCollectionLocalCache redissonCollectionLocalCache;
 ```
 
 
@@ -89,7 +89,7 @@ public String test(User user) {
 ```
 ---
 
->2.如何存储数据?(目前实现了四个对象模板)
+>2.如何存储数据?
 
 1.RedissonObject 这个是比较通用的模板,任何对象都可以存在这里面,在spring 容器中注入对象即可 [demo实例](readme/object.md)
 ```
@@ -98,25 +98,25 @@ public String test(User user) {
 ```
 
 
-2.redissonObjectLocalCache 相比 RedissonObject 增加了基于jvm的内存缓存.大大降低了网络开销
+2.RedissonCollectionLocalCache 相比 RedissonCollection 增加了基于jvm的内存缓存.大大降低了网络开销
+```
+    @Autowired
+    private RedissonCollectionLocalCache redissonCollectionLocalCache;
+```
+
+
+3.RedissonObjectLocalCache 相比 RedissonObject 增加了基于jvm的内存缓存.大大降低了网络开销
 ```
     @Autowired
     private RedissonObjectLocalCache redissonObjectLocalCache;
 ```
 
-
-2.RedissonObjectMultiLocalCache 相比 redissonObjectLocalCache 采用多个缓存实例.(比如:有些热门数据是基于用户来的.就可以用这个缓存)
-```
-    @Autowired
-    private RedissonObjectMultiLocalCache redissonObjectMultiLocalCache;
-```
-
-3.RedissonBinary 这个是存储二进制的模板.可以存放图片之内的二进制文件,在spring 容器中注入对象即可 [demo实例](readme/binary.md)
+4.RedissonBinary 这个是存储二进制的模板.可以存放图片之内的二进制文件,在spring 容器中注入对象即可 [demo实例](readme/binary.md)
 ```
     @Autowired
     private RedissonBinary redissonBinary;
 ```
-4.RedissonCollection 这个是集合模板,可以存放`Map`,`List`,`Set`集合元素,在spring 容器中注入对象即可 [demo实例](readme/collection.md)
+5.RedissonCollection 这个是集合模板,可以存放`Map`,`List`,`Set`集合元素,在spring 容器中注入对象即可 [demo实例](readme/collection.md)
 ```
     @Autowired
     private RedissonCollection redissonCollection;
