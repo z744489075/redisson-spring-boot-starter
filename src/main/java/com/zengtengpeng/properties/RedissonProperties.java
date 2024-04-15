@@ -21,6 +21,20 @@ public class RedissonProperties {
     private TransportMode transportMode=TransportMode.NIO;
 
     //公共参数
+    //(单例)本地缓存缓存多久 10分钟
+    private Integer localCacheTime=1000*60*10;
+    //(单例)最小的缓存条目
+    private Integer localInitSize=50;
+    //(单例)最大的缓存条目
+    private Integer localMaxSize=5000;
+
+    //(多个实例)本地缓存缓存多久 5分钟
+    private Integer localCacheMultiTime=1000*60*5;
+    //(多个实例)最小的缓存条目
+    private Integer localInitMultiSize=50;
+    //(多个实例)最大的缓存条目
+    private Integer localMaxMultiSize=1000;
+
     private Integer idleConnectionTimeout = 10000;
 //    private Integer pingTimeout = 1000;
     private Integer connectTimeout = 10000;
@@ -61,6 +75,54 @@ public class RedissonProperties {
     @NestedConfigurationProperty
     private MultipleServerConfig multipleServerConfig;
 
+
+    public Integer getLocalCacheMultiTime() {
+        return localCacheMultiTime;
+    }
+
+    public void setLocalCacheMultiTime(Integer localCacheMultiTime) {
+        this.localCacheMultiTime = localCacheMultiTime;
+    }
+
+    public Integer getLocalInitMultiSize() {
+        return localInitMultiSize;
+    }
+
+    public void setLocalInitMultiSize(Integer localInitMultiSize) {
+        this.localInitMultiSize = localInitMultiSize;
+    }
+
+    public Integer getLocalMaxMultiSize() {
+        return localMaxMultiSize;
+    }
+
+    public void setLocalMaxMultiSize(Integer localMaxMultiSize) {
+        this.localMaxMultiSize = localMaxMultiSize;
+    }
+
+    public Integer getLocalCacheTime() {
+        return localCacheTime;
+    }
+
+    public void setLocalCacheTime(Integer localCacheTime) {
+        this.localCacheTime = localCacheTime;
+    }
+
+    public Integer getLocalInitSize() {
+        return localInitSize;
+    }
+
+    public void setLocalInitSize(Integer localInitSize) {
+        this.localInitSize = localInitSize;
+    }
+
+    public Integer getLocalMaxSize() {
+        return localMaxSize;
+    }
+
+    public void setLocalMaxSize(Integer localMaxSize) {
+        this.localMaxSize = localMaxSize;
+    }
 
     public Long getDataValidTime() {
         return dataValidTime;

@@ -1,11 +1,29 @@
 # redisson-spring-boot-starter 
+
+
 目前有很多项目还在使用jedis的 `setNx` 充当分布式锁,然而这个锁是有问题的,redisson是java支持redis的redlock的`唯一`实现,
 集成该项目后只需要极少的配置.就能够使用redisson的全部功能. 目前支持
 `集群模式`,`云托管模式`,`单Redis节点模式`,`哨兵模式`,`主从模式` 配置. 支持 `可重入锁`,`公平锁`,`联锁`,`红锁`,`读写锁` 锁定模式
 
 #### 升级日志
 
-[请点击这里](readme/up.md) 
+##### 2024-04-15
+
+增加基于jvm的本地缓存,大大降低了网络开销
+
+```
+    @Autowired
+    private RedissonObjectLocalCache redissonObjectLocalCache;
+```
+
+```
+    @Autowired
+    private RedissonObjectMultiLocalCache redissonObjectMultiLocalCache;
+```
+
+
+
+其他更新 [请点击这里](readme/up.md) 
 
 #### 介绍
 1. 我们为什么需要`redisson`?
@@ -41,7 +59,7 @@
 <dependency>
     <groupId>com.zengtengpeng</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>3.0.5</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 
@@ -71,25 +89,40 @@ public String test(User user) {
 ```
 ---
 
->2.如何存储数据?(目前实现了三个对象模板)
+>2.如何存储数据?(目前实现了四个对象模板)
 
 1.RedissonObject 这个是比较通用的模板,任何对象都可以存在这里面,在spring 容器中注入对象即可 [demo实例](readme/object.md)
 ```
     @Autowired
     private RedissonObject redissonObject;
 ```
-2.RedissonBinary 这个是存储二进制的模板.可以存放图片之内的二进制文件,在spring 容器中注入对象即可 [demo实例](readme/binary.md)
+
+
+2.redissonObjectLocalCache 相比 RedissonObject 增加了基于jvm的内存缓存.大大降低了网络开销
+```
+    @Autowired
+    private RedissonObjectLocalCache redissonObjectLocalCache;
+```
+
+
+2.RedissonObjectMultiLocalCache 相比 redissonObjectLocalCache 采用多个缓存实例.(比如:有些热门数据是基于用户来的.就可以用这个缓存)
+```
+    @Autowired
+    private RedissonObjectMultiLocalCache redissonObjectMultiLocalCache;
+```
+
+3.RedissonBinary 这个是存储二进制的模板.可以存放图片之内的二进制文件,在spring 容器中注入对象即可 [demo实例](readme/binary.md)
 ```
     @Autowired
     private RedissonBinary redissonBinary;
 ```
-3.RedissonCollection 这个是集合模板,可以存放`Map`,`List`,`Set`集合元素,在spring 容器中注入对象即可 [demo实例](readme/collection.md)
+4.RedissonCollection 这个是集合模板,可以存放`Map`,`List`,`Set`集合元素,在spring 容器中注入对象即可 [demo实例](readme/collection.md)
 ```
     @Autowired
     private RedissonCollection redissonCollection;
 ```
 
-4.RedissonCollectionCache 此集合与上面的 RedissonCollection 基本相同,但是增加单个元素的淘汰机制 详见 
+5.RedissonCollectionCache 此集合与上面的 RedissonCollection 基本相同,但是增加单个元素的淘汰机制 详见 
 [WIKI](https://github.com/redisson/redisson/wiki/7.-%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E5%90%88#711-%E6%98%A0%E5%B0%84map%E7%9A%84%E5%85%83%E7%B4%A0%E6%B7%98%E6%B1%B0eviction%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98localcache%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87sharding)
 
 ```
