@@ -45,6 +45,7 @@ public class RedissonCollectionLocalCache {
     public <T> T getMapValue(String redisKey, String mapKey) {
         return getMapValue(redisKey,mapKey,new CaffeineTimeBeanVo());
     }
+
     /**
      * 获取map集合对应的key值
      *
@@ -80,6 +81,18 @@ public class RedissonCollectionLocalCache {
         return (T) ifPresent;
     }
 
+
+    /**
+     * 获取map集合对应的key值
+     *
+     * @param redisKey
+     * @return
+     */
+    public <T> T getMapValueNoLocalCache(String redisKey, String mapKey) {
+        RMap<String, T> map = redissonClient.getMap(redisKey);
+        return map.get(mapKey);
+    }
+
     /**
      * 先从map集合获取数据,如果没有则从接口获取
      *
@@ -91,6 +104,18 @@ public class RedissonCollectionLocalCache {
         return getMapValue(redisKey, mapKey, realData, redissonProperties.getDataValidTime(), null);
     }
 
+
+    /**
+     * 先从map集合获取数据,如果没有则从接口获取
+     *
+     * @param redisKey
+     * @return
+     */
+    public <T> T getMapValueNoLocalCache(String redisKey, String mapKey, RealData<T> realData) {
+
+        return getMapValueNoLocalCache(redisKey, mapKey, realData, redissonProperties.getDataValidTime());
+    }
+
     /**
      * 先从map集合获取数据,如果没有则从接口获取
      *
@@ -99,7 +124,7 @@ public class RedissonCollectionLocalCache {
      */
     public <T> T getMapValue(String redisKey, String mapKey, RealData<T> realData,
                              Long time, CaffeineTimeBeanVo caffeineTimeBeanVo) {
-        Object o = getMapValue(redisKey, mapKey, caffeineTimeBeanVo);
+        T o = getMapValue(redisKey, mapKey, caffeineTimeBeanVo);
         if (o == null) {
             o = realData.get();
             if (ObjectUtils.isEmpty(o)) {
@@ -108,7 +133,28 @@ public class RedissonCollectionLocalCache {
                 setMapValue(redisKey, mapKey, o, time);
             }
         }
-        return (T) o;
+        return  o;
+    }
+
+
+    /**
+     * 先从map集合获取数据,如果没有则从接口获取
+     *
+     * @param redisKey
+     * @return
+     */
+    public <T> T getMapValueNoLocalCache(String redisKey, String mapKey, RealData<T> realData,
+                             Long time) {
+        T o = getMapValueNoLocalCache(redisKey, mapKey);
+        if (o == null) {
+            o = realData.get();
+            if (ObjectUtils.isEmpty(o)) {
+                redissonClient.getMap(redisKey).remove(mapKey);
+            } else {
+                setMapValue(redisKey, mapKey, o, time);
+            }
+        }
+        return o;
     }
 
 

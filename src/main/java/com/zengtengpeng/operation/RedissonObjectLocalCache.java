@@ -48,6 +48,8 @@ public class RedissonObjectLocalCache {
     public <T> T getValue(String redisKey,String localCacheKey) {
         return getValue(redisKey,localCacheKey,new CaffeineTimeBeanVo());
     }
+
+
     /**
      * 获取对象值
      *
@@ -86,12 +88,37 @@ public class RedissonObjectLocalCache {
     /**
      * 获取对象值
      *
+     * @param redisKey redis的key
+     * @param <T>
+     * @return
+     */
+    public <T> T getValueNoLocalCache(String redisKey) {
+        RBucket<T> bucket = redissonClient.getBucket(redisKey);
+        return bucket.get();
+    }
+
+
+    /**
+     * 获取对象值
+     *
      * @param redisKey
      * @param <T>
      * @return
      */
     public <T> T getValue(String redisKey,String localCacheKey, RealData<T> realData) {
         return getValue(redisKey,localCacheKey, realData, redissonProperties.getDataValidTime(),null);
+    }
+
+
+    /**
+     * 获取对象值
+     *
+     * @param redisKey
+     * @param <T>
+     * @return
+     */
+    public <T> T getValueNoLocalCache(String redisKey,String localCacheKey, RealData<T> realData) {
+        return getValueNoLocalCache(redisKey,localCacheKey, realData, redissonProperties.getDataValidTime());
     }
 
     /**
@@ -123,7 +150,30 @@ public class RedissonObjectLocalCache {
      * @param <T>
      * @return
      */
-    public <T> T getValue(String redisKey,String localCacheKey, RealData<T> realData, DataCache<T> dataCache, Long time, CaffeineTimeBeanVo caffeineTimeBeanVo) {
+    public <T> T getValueNoLocalCache(String redisKey,String localCacheKey, RealData<T> realData, Long time) {
+        T value = getValueNoLocalCache(redisKey);
+        if (value == null) {
+            value = realData.get();
+            if (ObjectUtils.isEmpty(value)) {
+                //如果是空的,则删除
+                delete(redisKey,localCacheKey);
+            } else {
+                //否则insert
+                setValue(redisKey,localCacheKey, value, time);
+            }
+        }
+        return value;
+    }
+
+    /**
+     * 获取对象值
+     *
+     * @param redisKey
+     * @param <T>
+     * @return
+     */
+    public <T> T getValue(String redisKey,String localCacheKey, RealData<T> realData, DataCache<T> dataCache,
+                          Long time, CaffeineTimeBeanVo caffeineTimeBeanVo) {
         T value = getValue(redisKey,localCacheKey,caffeineTimeBeanVo);
         if (value == null) {
             value = realData.get();
