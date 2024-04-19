@@ -8,7 +8,6 @@ import org.redisson.config.TransportMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-import java.net.URI;
 import java.net.URL;
 
 @ConfigurationProperties(prefix = "redisson")
@@ -26,6 +25,11 @@ public class RedissonProperties {
     private Integer timeout = 3000;
     private Integer retryAttempts = 3;
     private Integer retryInterval = 1500;
+
+    /**
+     * 是否打印清理key的日志
+    */
+    private Boolean localCacheKeyLog =false;
     private String password;
     private String username;
     private Integer subscriptionsPerConnection = 5;
@@ -60,6 +64,13 @@ public class RedissonProperties {
     @NestedConfigurationProperty
     private MultipleServerConfig multipleServerConfig;
 
+    public Boolean getLocalCacheKeyLog() {
+        return localCacheKeyLog;
+    }
+
+    public void setLocalCacheKeyLog(Boolean localCacheKeyLog) {
+        this.localCacheKeyLog = localCacheKeyLog;
+    }
 
     public Long getDataValidTime() {
         return dataValidTime;

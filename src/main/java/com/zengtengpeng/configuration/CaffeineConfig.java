@@ -39,7 +39,11 @@ public class CaffeineConfig {
         RTopic topic = redissonClient.getTopic(localCacheKey);
 
         topic.addListener(LocalCacheKeyVo.class, (channel, localCacheKeyVo) -> {
-            logger.info("开始清理localCacheKey:{}", localCacheKeyVo);
+
+            if(redissonProperties.getLocalCacheKeyLog()) {
+                logger.info("clear localCacheKey:{}", localCacheKeyVo);
+            }
+
             LocalDataUtils.clearLocalData(localCacheKeyVo);
         });
 
